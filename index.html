@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💕 Tabungan Benopi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #ffe4ec 0%, #e0f7fa 50%, #fff9c4 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #444;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .header h1 {
+            color: #d81b60;
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-shadow: 3px 3px 0px #fff, 5px 5px 15px rgba(216, 27, 96, 0.2);
+        }
+
+        .header p {
+            color: #888;
+            margin-top: 8px;
+            font-size: 1rem;
+        }
+
+        .edit-target {
+            background: none;
+            border: none;
+            color: #d81b60;
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-decoration: underline;
+        }
+
+        .progress-card {
+            background: white;
+            border-radius: 24px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 40px rgba(216, 27, 96, 0.12);
+            border: 3px solid #fce4ec;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(252, 228, 236, 0.5) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .progress-amount {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #d81b60;
+        }
+
+        .progress-sub {
+            font-size: 0.9rem;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        .progress-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #fce4ec, #f8bbd0);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 4px 15px rgba(216, 27, 96, 0.2);
+            border: 4px solid white;
+        }
+
+        .progress-bar-container {
+            background: #f5f5f5;
+            border-radius: 12px;
+            height: 20px;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #f48fb1, #d81b60, #ad1457);
+            border-radius: 12px;
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.95rem;
+            color: #d81b60;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+
+        .characters {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 28px;
+        }
+
+        .character {
+            text-align: center;
+            cursor: grab;
+            transition: transform 0.2s;
+        }
+
+        .character:active {
+            cursor: grabbing;
+            transform: scale(0.95);
+        }
+
+        .character-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            border: 4px solid white;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .character:hover .character-avatar {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .character-boy .character-avatar {
+            background: linear-gradient(135deg, #bbdefb, #90caf9);
+        }
+
+        .character-girl .character-avatar {
+            background: linear-gradient(135deg, #f8bbd0, #f48fb1);
+        }
+
+        .character-name {
+            margin-top: 8px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #555;
+            cursor: pointer;
+        }
+
+        .character-name:hover {
+            color: #d81b60;
+        }
+
+        .heart-divider {
+            font-size: 2rem;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.06);
+            border: 2px solid transparent;
+            transition: border-color 0.3s;
+        }
+
+        .card:hover {
+            border-color: #fce4ec;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #d81b60, #ad1457);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            font-weight: 700;
+            font-family: 'Nunito', sans-serif;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(216, 27, 96, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(216, 27, 96, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #42a5f5, #1976d2);
+            box-shadow: 0 4px 15px rgba(25, 118, 210, 0.3);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 6px 20px rgba(25, 118, 210, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef5350, #c62828);
+            box-shadow: 0 4px 15px rgba(198, 40, 40, 0.3);
+            padding: 6px 12px;
+            font-size: 0.75rem;
+        }
+
+        .btn-ghost {
+            background: #f5f5f5;
+            color: #666;
+            box-shadow: none;
+        }
+
+        .btn-ghost:hover {
+            background: #e0e0e0;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 0.9rem;
+        }
+
+        th {
+            color: #888;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: 700;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        td {
+            padding: 14px 8px;
+            border-bottom: 1px solid #f5f5f5;
+            vertical-align: middle;
+        }
+
+        tr {
+            transition: background 0.2s;
+        }
+
+        tr:hover {
+            background: #fff8fb;
+        }
+
+        .amount-in {
+            color: #2e7d32;
+            font-weight: 700;
+        }
+
+        .sticker-cell {
+            text-align: center;
+            font-size: 1.3rem;
+            cursor: pointer;
+            min-width: 40px;
+            transition: transform 0.2s;
+        }
+
+        .sticker-cell:hover {
+            transform: scale(1.3);
+        }
+
+        .sticker-cell.drag-over {
+            background: #fce4ec;
+            border-radius: 8px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #bbb;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+        }
+
+        .sticker-palette {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .sticker-item {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            cursor: grab;
+            border: 3px solid white;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+            user-select: none;
+        }
+
+        .sticker-item:hover {
+            transform: translateY(-4px) scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .sticker-item:active {
+            cursor: grabbing;
+        }
+
+        .hint {
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-top: 12px;
+            text-align: center;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 24px;
+            padding: 28px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            animation: modalIn 0.3s ease;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #666;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 14px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+            outline: none;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            border-color: #f48fb1;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .modal-actions .btn {
+            flex: 1;
+        }
+
+        .btn-cancel {
+            background: #f5f5f5;
+            color: #666;
+            box-shadow: none;
+        }
+
+        .btn-cancel:hover {
+            background: #e0e0e0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .stat-item {
+            background: white;
+            border-radius: 20px;
+            padding: 16px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .stat-item:hover {
+            border-color: #fce4ec;
+            transform: translateY(-2px);
+        }
+
+        .stat-value {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #d81b60;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: #888;
+            margin-top: 4px;
+            font-weight: 600;
+        }
+
+        .sync-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .sync-badge.offline {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .sync-badge.syncing {
+            background: #fff8e1;
+            color: #f57f17;
+        }
+
+        .room-code-box {
+            background: linear-gradient(135deg, #fce4ec, #f8bbd0);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 2px dashed #f48fb1;
+        }
+
+        .room-code-box h3 {
+            color: #ad1457;
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
+        .room-code {
+            font-family: monospace;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #d81b60;
+            background: white;
+            padding: 8px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            letter-spacing: 2px;
+        }
+
+        .room-code-box p {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 8px;
+        }
+
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #ffe4ec 0%, #e0f7fa 50%, #fff9c4 100%);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-box {
+            background: white;
+            border-radius: 28px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            text-align: center;
+        }
+
+        .login-box h2 {
+            color: #d81b60;
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+
+        .login-box p {
+            color: #888;
+            margin-bottom: 24px;
+            font-size: 0.95rem;
+        }
+
+        .login-box .form-input {
+            text-align: center;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            font-weight: 700;
+            color: #d81b60;
+        }
+
+        .login-box .btn {
+            width: 100%;
+            margin-top: 12px;
+            padding: 14px;
+            font-size: 1rem;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        @keyframes heartbeat {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            14% {
+                transform: scale(1.15);
+            }
+
+            28% {
+                transform: scale(1);
+            }
+
+            42% {
+                transform: scale(1.15);
+            }
+
+            70% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        @keyframes dropBounce {
+            0% {
+                transform: scale(1.5);
+            }
+
+            50% {
+                transform: scale(0.9);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .drop-anim {
+            animation: dropBounce 0.4s ease;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            top: -10px;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .progress-amount {
+                font-size: 1.6rem;
+            }
+
+            .characters {
+                gap: 20px;
+            }
+
+            .character-avatar {
+                width: 65px;
+                height: 65px;
+                font-size: 2rem;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #f48fb1;
+            border-radius: 4px;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #fce4ec;
+            border-top-color: #d81b60;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Login Overlay -->
+    <div class="login-overlay" id="login-overlay">
+        <div class="login-box">
+            <div style="font-size: 3rem; margin-bottom: 12px;">💕</div>
+            <h2>Tabungan Bersama</h2>
+            <p>Masukkan kode pasangan kalian untuk mulai nabung bareng!</p>
+            <div class="form-group">
+                <label class="form-label" style="text-align: center;">Kode Pasangan</label>
+                <input type="text" class="form-input" id="room-code-input" placeholder="contoh: dinda-rizky"
+                    maxlength="30">
+            </div>
+            <button class="btn" onclick="joinRoom()">🚀 Mulai Nabung!</button>
+            <p style="font-size: 0.8rem; color: #aaa; margin-top: 16px;">
+                💡 Kode bebas, yang penting kalian berdua pakai kode yang sama.<br>
+                Contoh: nama-kalian, tanggal-jadian, atau apapun!
+            </p>
+        </div>
+    </div>
+
+    <div class="container" id="main-app" style="display: none;">
+        <!-- Room Code -->
+        <div class="room-code-box">
+            <h3>🔗 Kode Pasangan</h3>
+            <div class="room-code" id="display-room-code">-</div>
+            <p>Share kode ini ke pacar kamu via WhatsApp! 📲</p>
+            <button class="btn btn-ghost" style="margin-top: 8px; font-size: 0.75rem;" onclick="copyRoomCode()">📋 Copy
+                Kode</button>
+            <button class="btn btn-ghost" style="margin-top: 8px; font-size: 0.75rem; margin-left: 6px;"
+                onclick="logout()">🚪 Ganti Kode</button>
+        </div>
+
+        <!-- Header -->
+        <div class="header">
+            <h1>💕 Tabungan Bersama</h1>
+            <p>Target: <span id="target-name">🏠 Rumah Pertama</span>
+                <button class="edit-target" onclick="editTarget()">✏️ Edit</button>
+            </p>
+        </div>
+
+        <!-- Sync Status -->
+        <div style="text-align: center; margin-bottom: 16px;">
+            <span class="sync-badge" id="sync-status">
+                <span class="loading"></span> Menyambungkan...
+            </span>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-value" id="stat-total">Rp 0</div>
+                <div class="stat-label">Total Tercapai</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="stat-remaining">Rp 0</div>
+                <div class="stat-label">Sisa Target</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="stat-count">0</div>
+                <div class="stat-label">Transaksi</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="stat-percent">0%</div>
+                <div class="stat-label">Progress</div>
+            </div>
+        </div>
+
+        <!-- Progress Card -->
+        <div class="progress-card">
+            <div class="progress-header">
+                <div>
+                    <div class="progress-amount" id="progress-amount">Rp 0</div>
+                    <div class="progress-sub">terkumpul dari <span id="target-amount-display">Rp 50.000.000</span></div>
+                </div>
+                <div class="progress-icon" id="target-icon">🏠</div>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progress-bar" style="width: 0%"></div>
+            </div>
+            <div class="progress-text" id="progress-text">0% tercapai! Ayo semangat! 🌟</div>
+        </div>
+
+        <!-- Characters -->
+        <div class="characters">
+            <div class="character character-boy" draggable="true" data-sticker="boy">
+                <div class="character-avatar">👦</div>
+                <div class="character-name" onclick="editName('boy')" id="name-boy">Aku</div>
+            </div>
+            <div class="heart-divider">💕</div>
+            <div class="character character-girl" draggable="true" data-sticker="girl">
+                <div class="character-avatar">👧</div>
+                <div class="character-name" onclick="editName('girl')" id="name-girl">Kamu</div>
+            </div>
+        </div>
+
+        <!-- Transaction Table -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">📒 Riwayat Tabungan</div>
+                <div>
+                    <button class="btn btn-secondary" onclick="exportCSV()" style="margin-right: 8px;">📥
+                        Export</button>
+                    <button class="btn" onclick="openModal()">+ Tambah</button>
+                </div>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Nama</th>
+                            <th>Keterangan</th>
+                            <th style="text-align: right;">Jumlah</th>
+                            <th style="text-align: center;">Stiker</th>
+                            <th style="text-align: center;">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transaction-body"></tbody>
+                </table>
+                <div class="empty-state" id="empty-state" style="display: none;">
+                    <div class="empty-state-icon">📝</div>
+                    <div>Belum ada transaksi nih~</div>
+                    <div style="font-size: 0.85rem; margin-top: 4px;">Yuk mulai nabung bareng! 💪</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sticker Palette -->
+        <div class="card" style="border-color: #fff9c4;">
+            <div class="card-title">🎨 Stiker Lucu (Drag ke tabel!)</div>
+            <div class="sticker-palette" id="sticker-palette">
+                <div class="sticker-item" style="background: #fff8e1; border-color: #ffe082;" draggable="true"
+                    data-emoji="🌟">🌟</div>
+                <div class="sticker-item" style="background: #fce4ec; border-color: #f48fb1;" draggable="true"
+                    data-emoji="💖">💖</div>
+                <div class="sticker-item" style="background: #e8f5e9; border-color: #a5d6a7;" draggable="true"
+                    data-emoji="🎯">🎯</div>
+                <div class="sticker-item" style="background: #e3f2fd; border-color: #90caf9;" draggable="true"
+                    data-emoji="🚀">🚀</div>
+                <div class="sticker-item" style="background: #fce4ec; border-color: #f8bbd0;" draggable="true"
+                    data-emoji="🐷">🐷</div>
+                <div class="sticker-item" style="background: #f3e5f5; border-color: #ce93d8;" draggable="true"
+                    data-emoji="🐱">🐱</div>
+                <div class="sticker-item" style="background: #fff3e0; border-color: #ffcc80;" draggable="true"
+                    data-emoji="🐶">🐶</div>
+                <div class="sticker-item" style="background: #efebe9; border-color: #bcaaa4;" draggable="true"
+                    data-emoji="🐻">🐻</div>
+                <div class="sticker-item" style="background: #eceff1; border-color: #b0bec5;" draggable="true"
+                    data-emoji="🐼">🐼</div>
+                <div class="sticker-item" style="background: #fce4ec; border-color: #f48fb1;" draggable="true"
+                    data-emoji="🐰">🐰</div>
+                <div class="sticker-item" style="background: #fff8e1; border-color: #ffe082;" draggable="true"
+                    data-emoji="🦊">🦊</div>
+                <div class="sticker-item" style="background: #e3f2fd; border-color: #90caf9;" draggable="true"
+                    data-emoji="🐧">🐧</div>
+                <div class="sticker-item" style="background: #e8f5e9; border-color: #a5d6a7;" draggable="true"
+                    data-emoji="🐸">🐸</div>
+                <div class="sticker-item" style="background: #fce4ec; border-color: #f8bbd0;" draggable="true"
+                    data-emoji="🦄">🦄</div>
+                <div class="sticker-item" style="background: #fff3e0; border-color: #ffcc80;" draggable="true"
+                    data-emoji="🦋">🦋</div>
+            </div>
+            <div class="hint">💡 Drag stiker dan lepas di kolom stiker tabel untuk menandai transaksi favorit!</div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modal">
+        <div class="modal">
+            <div class="modal-title" id="modal-title">✨ Tambah Tabungan</div>
+            <div class="form-group">
+                <label class="form-label">Tanggal</label>
+                <input type="date" class="form-input" id="input-date">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Siapa yang nabung?</label>
+                <select class="form-select" id="input-person">
+                    <option value="boy">👦 Aku</option>
+                    <option value="girl">👧 Kamu</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Keterangan (opsional)</label>
+                <input type="text" class="form-input" id="input-note" placeholder="Contoh: Gajian bulan Juli">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Jumlah (Rp)</label>
+                <input type="number" class="form-input" id="input-amount" placeholder="1000000">
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-cancel" onclick="closeModal()">Batal</button>
+                <button class="btn" onclick="saveTransaction()">Simpan 💾</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getFirestore, doc, setDoc, getDoc, onSnapshot, updateDoc, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+        // ═══════════════════════════════════════════════════════
+        // GANTI INI DENGAN CONFIG DARI FIREBASE CONSOLE KAMU!
+        // ═══════════════════════════════════════════════════════
+        const firebaseConfig = {
+            apiKey: "AIzaSyCiWew1RIZUrbbLSSIW9hZ_OBCanJS90ds",
+            authDomain: "tabungan-benopi.firebaseapp.com",
+            projectId: "tabungan-benopi",
+            storageBucket: "tabungan-benopi.firebasestorage.app",
+            messagingSenderId: "455639943894",
+            appId: "1:455639943894:web:362b8aea031cf567cd5777",
+            measurementId: "G-1W4E03VW1T"
+        };
+        // ═══════════════════════════════════════════════════════
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let roomCode = localStorage.getItem('tabunganRoomCode') || '';
+        let unsubscribe = null;
+        let currentData = null;
+
+        // Default config
+        let config = {
+            targetName: '🏠 Rumah Pertama',
+            targetAmount: 50000000,
+            targetIcon: '🏠',
+            boyName: 'Aku',
+            girlName: 'Kamu',
+            transactions: []
+        };
+
+        // ═══════════════════════════════════════════════════════
+        // ROOM / LOGIN
+        // ═══════════════════════════════════════════════════════
+        if (roomCode) {
+            document.getElementById('login-overlay').style.display = 'none';
+            document.getElementById('main-app').style.display = 'block';
+            document.getElementById('display-room-code').textContent = roomCode;
+            startListening(roomCode);
+        }
+
+        window.joinRoom = function () {
+            const code = document.getElementById('room-code-input').value.trim().toLowerCase().replace(/\s+/g, '-');
+            if (!code) {
+                alert('Masukkan kode pasangan dulu ya! 💕');
+                return;
+            }
+            if (code.length < 3) {
+                alert('Kode minimal 3 karakter ya! 😊');
+                return;
+            }
+            roomCode = code;
+            localStorage.setItem('tabunganRoomCode', roomCode);
+            document.getElementById('login-overlay').style.display = 'none';
+            document.getElementById('main-app').style.display = 'block';
+            document.getElementById('display-room-code').textContent = roomCode;
+            startListening(roomCode);
+        };
+
+        window.logout = function () {
+            if (unsubscribe) unsubscribe();
+            localStorage.removeItem('tabunganRoomCode');
+            location.reload();
+        };
+
+        window.copyRoomCode = function () {
+            navigator.clipboard.writeText(roomCode).then(() => {
+                alert('Kode berhasil di-copy! Kirim ke pacar kamu ya 💕');
+            });
+        };
+
+        // ═══════════════════════════════════════════════════════
+        // FIREBASE LISTENER
+        // ═══════════════════════════════════════════════════════
+        async function startListening(code) {
+            const docRef = doc(db, 'couples', code);
+
+            // Try to get existing doc
+            const snap = await getDoc(docRef);
+            if (!snap.exists()) {
+                // Create new doc with defaults
+                await setDoc(docRef, config);
+            } else {
+                currentData = snap.data();
+                config = { ...config, ...currentData };
+            }
+
+            // Real-time listener
+            unsubscribe = onSnapshot(docRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    currentData = docSnap.data();
+                    config = { ...config, ...currentData };
+                    if (!config.transactions) config.transactions = [];
+                    updateUI();
+                    setSyncStatus('online', '✅ Tersinkron');
+                }
+            }, (err) => {
+                console.error(err);
+                setSyncStatus('offline', '❌ Offline');
+            });
+        }
+
+        function setSyncStatus(type, text) {
+            const el = document.getElementById('sync-status');
+            el.className = 'sync-badge ' + type;
+            el.innerHTML = text;
+        }
+
+        // ═══════════════════════════════════════════════════════
+        // UPDATE UI
+        // ═══════════════════════════════════════════════════════
+        function updateUI() {
+            document.getElementById('target-name').textContent = config.targetName;
+            document.getElementById('target-amount-display').textContent = formatRupiah(config.targetAmount);
+            document.getElementById('target-icon').textContent = config.targetIcon;
+            document.getElementById('name-boy').textContent = config.boyName;
+            document.getElementById('name-girl').textContent = config.girlName;
+
+            const select = document.getElementById('input-person');
+            select.options[0].text = `👦 ${config.boyName}`;
+            select.options[1].text = `👧 ${config.girlName}`;
+
+            const transactions = config.transactions || [];
+            const total = transactions.reduce((sum, t) => sum + (t.amount || 0), 0);
+            const remaining = Math.max(0, config.targetAmount - total);
+            const percent = Math.min(100, Math.round((total / config.targetAmount) * 100));
+
+            document.getElementById('stat-total').textContent = formatRupiah(total);
+            document.getElementById('stat-remaining').textContent = formatRupiah(remaining);
+            document.getElementById('stat-count').textContent = transactions.length;
+            document.getElementById('stat-percent').textContent = percent + '%';
+
+            document.getElementById('progress-amount').textContent = formatRupiah(total);
+            document.getElementById('progress-bar').style.width = percent + '%';
+
+            const messages = [
+                '0% tercapai! Ayo mulai nabung! 🌱',
+                'Sudah mulai! Jangan berhenti! 💪',
+                'Lumayan nih, keep going! 🔥',
+                'Separuh jalan! Semangat! 🚀',
+                'Hampir sampai! Kita pasti bisa! 🌟',
+                'Wah target tercapai! 🎉🎊'
+            ];
+            const msgIndex = percent === 100 ? 5 : Math.floor((percent / 100) * 5);
+            document.getElementById('progress-text').textContent = messages[Math.min(msgIndex, 5)];
+
+            const tbody = document.getElementById('transaction-body');
+            const emptyState = document.getElementById('empty-state');
+
+            if (transactions.length === 0) {
+                tbody.innerHTML = '';
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+                tbody.innerHTML = [...transactions]
+                    .sort((a, b) => new Date(b.date) - new Date(a.date))
+                    .map(t => `
+                        <tr data-id="${t.id}">
+                            <td>${new Date(t.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}</td>
+                            <td style="font-weight: 700;">${t.person === 'boy' ? '👦' : '👧'} ${t.person === 'boy' ? config.boyName : config.girlName}</td>
+                            <td style="color: #888; font-size: 0.85rem;">${t.note || '-'}</td>
+                            <td class="amount-in" style="text-align: right;">+${formatRupiah(t.amount)}</td>
+                            <td class="sticker-cell" ondragover="allowDrop(event)" ondrop="dropSticker(event, '${t.id}')">${t.sticker || '✨'}</td>
+                            <td style="text-align: center;">
+                                <button class="btn btn-danger" onclick="deleteTransaction('${t.id}')">🗑️</button>
+                            </td>
+                        </tr>
+                    `).join('');
+            }
+
+            if (percent === 100 && transactions.length > 0) {
+                launchConfetti();
+            }
+        }
+
+        function formatRupiah(num) {
+            return 'Rp ' + (num || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        }
+
+        // ═══════════════════════════════════════════════════════
+        // CRUD OPERATIONS
+        // ═══════════════════════════════════════════════════════
+        async function updateDocData(updates) {
+            if (!roomCode) return;
+            const docRef = doc(db, 'couples', roomCode);
+            await updateDoc(docRef, updates);
+        }
+
+        window.openModal = function () {
+            document.getElementById('modal-title').textContent = '✨ Tambah Tabungan';
+            document.getElementById('input-date').valueAsDate = new Date();
+            document.getElementById('input-person').value = 'boy';
+            document.getElementById('input-note').value = '';
+            document.getElementById('input-amount').value = '';
+            document.getElementById('modal').classList.add('active');
+        };
+
+        window.closeModal = function () {
+            document.getElementById('modal').classList.remove('active');
+        };
+
+        window.saveTransaction = async function () {
+            const date = document.getElementById('input-date').value;
+            const person = document.getElementById('input-person').value;
+            const note = document.getElementById('input-note').value;
+            const amount = parseInt(document.getElementById('input-amount').value) || 0;
+
+            if (!date || amount <= 0) {
+                alert('Isi tanggal dan jumlah dengan benar ya! 💕');
+                return;
+            }
+
+            const newTransaction = {
+                id: Date.now().toString(),
+                date,
+                person,
+                note,
+                amount,
+                sticker: ''
+            };
+
+            await updateDocData({
+                transactions: arrayUnion(newTransaction)
+            });
+
+            closeModal();
+        };
+
+        window.deleteTransaction = async function (id) {
+            if (!confirm('Yakin mau hapus transaksi ini? 🥺')) return;
+            const t = config.transactions.find(tr => tr.id === id);
+            if (t) {
+                await updateDocData({
+                    transactions: arrayRemove(t)
+                });
+            }
+        };
+
+        // ═══════════════════════════════════════════════════════
+        // DRAG & DROP STICKERS
+        // ═══════════════════════════════════════════════════════
+        let draggedEmoji = null;
+        document.querySelectorAll('.sticker-item, .character').forEach(el => {
+            el.addEventListener('dragstart', (e) => {
+                draggedEmoji = el.getAttribute('data-emoji') || el.querySelector('.character-avatar').textContent;
+                e.dataTransfer.effectAllowed = 'copy';
+            });
+        });
+
+        window.allowDrop = function (e) {
+            e.preventDefault();
+        };
+
+        window.dropSticker = async function (e, id) {
+            e.preventDefault();
+            if (!draggedEmoji) return;
+
+            const transactions = [...config.transactions];
+            const idx = transactions.findIndex(t => t.id === id);
+            if (idx !== -1) {
+                // Remove old
+                const oldT = transactions[idx];
+                const newT = { ...oldT, sticker: draggedEmoji };
+
+                await updateDocData({
+                    transactions: arrayRemove(oldT)
+                });
+                await updateDocData({
+                    transactions: arrayUnion(newT)
+                });
+            }
+            draggedEmoji = null;
+        };
+
+        // ═══════════════════════════════════════════════════════
+        // EDIT CONFIG
+        // ═══════════════════════════════════════════════════════
+        window.editName = async function (who) {
+            const current = who === 'boy' ? config.boyName : config.girlName;
+            const newName = prompt(`Ganti nama ${who === 'boy' ? 'cowok' : 'cewek'}:`, current);
+            if (newName && newName.trim()) {
+                await updateDocData({
+                    [who === 'boy' ? 'boyName' : 'girlName']: newName.trim()
+                });
+            }
+        };
+
+        window.editTarget = async function () {
+            const newTarget = prompt('Nama target:', config.targetName.replace(/[🏠🕋✈️🚗💍📱]/g, '').trim());
+            const newAmount = prompt('Jumlah target (tanpa titik):', config.targetAmount);
+            const newIcon = prompt('Icon target (emoji):', config.targetIcon);
+
+            const updates = {};
+            if (newTarget) updates.targetName = newIcon + ' ' + newTarget;
+            if (newAmount && !isNaN(newAmount)) updates.targetAmount = parseInt(newAmount);
+            if (newIcon) updates.targetIcon = newIcon;
+
+            if (Object.keys(updates).length > 0) {
+                await updateDocData(updates);
+            }
+        };
+
+        // ═══════════════════════════════════════════════════════
+        // EXPORT CSV
+        // ═══════════════════════════════════════════════════════
+        window.exportCSV = function () {
+            const transactions = config.transactions || [];
+            if (transactions.length === 0) {
+                alert('Belum ada data untuk di-export! 😅');
+                return;
+            }
+            let csv = 'Tanggal,Nama,Keterangan,Jumlah,Stiker\n';
+            transactions.forEach(t => {
+                const name = t.person === 'boy' ? config.boyName : config.girlName;
+                csv += `${t.date},${name},"${t.note || ''}",${t.amount},${t.sticker || ''}\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `tabungan-${roomCode}-${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+        };
+
+        // ═══════════════════════════════════════════════════════
+        // CONFETTI
+        // ═══════════════════════════════════════════════════════
+        window.launchConfetti = function () {
+            const colors = ['#f48fb1', '#d81b60', '#ffcc80', '#a5d6a7', '#90caf9', '#ce93d8', '#fff176'];
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const conf = document.createElement('div');
+                    conf.className = 'confetti';
+                    conf.style.left = Math.random() * 100 + 'vw';
+                    conf.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    conf.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    conf.style.animation = `fall ${2 + Math.random() * 2}s linear forwards`;
+                    document.body.appendChild(conf);
+                    setTimeout(() => conf.remove(), 4000);
+                }, i * 50);
+            }
+        };
+
+        // Close modal on outside click
+        document.getElementById('modal').addEventListener('click', (e) => {
+            if (e.target.id === 'modal') closeModal();
+        });
+
+        // Init date
+        document.getElementById('input-date').valueAsDate = new Date();
+    </script>
+</body>
+
+</html>
