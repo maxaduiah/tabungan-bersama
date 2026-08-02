@@ -449,7 +449,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
         import { getFirestore, doc, setDoc, getDoc, onSnapshot, updateDoc, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-        import { getStorage, ref, uploadString, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+        
 
         const firebaseConfig = {
             apiKey: "AIzaSyCiWew1RIZUrbbLSSIW9hZ_OBCanJS90ds",
@@ -463,7 +463,7 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        const storage = getStorage(app);
+        
 
         let roomCode = localStorage.getItem('tabunganRoomCode') || '';
         let unsubscribe = null;
@@ -599,7 +599,7 @@
                 tbody.innerHTML = [...transactions]
                     .sort((a, b) => new Date(b.date) - new Date(a.date))
                     .map(t => {
-                        const hasPhoto = t.photo && t.photo.url;
+                        const hasPhoto = t.photo && t.photo.data;
                         return `
                         <tr data-id="${t.id}">
                             <td>${new Date(t.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}</td>
@@ -609,7 +609,7 @@
                             <td class="sticker-cell" ondragover="allowDrop(event)" ondrop="dropSticker(event, '${t.id}')">${t.sticker || '✨'}</td>
                             <td class="photo-cell">
                                 ${hasPhoto
-                                    ? `<img src="${t.photo.url}" class="photo-thumb" onclick="openPhotoPreview('${t.id}')" alt="📸">`
+                                    ? `<img src="${t.photo.data}" class="photo-thumb" onclick="openPhotoPreview('${t.id}')" alt="📸">`
                                     : `<div class="photo-placeholder" onclick="openPhotoModal('${t.id}')">📷</div>`
                                 }
                             </td>
@@ -679,12 +679,6 @@
             if (!confirm('Yakin mau hapus transaksi ini? 🥺')) return;
             const t = config.transactions.find(tr => tr.id === id);
             if (t) {
-                if (t.photo && t.photo.url) {
-                    try {
-                        const photoRef = ref(storage, `couples/${roomCode}/transactions/${t.id}/photo.jpg`);
-                        await deleteObject(photoRef);
-                    } catch(e) { console.log('Foto mungkin sudah terhapus'); }
-                }
                 await updateDocData({ transactions: arrayRemove(t) });
             }
         };
@@ -868,17 +862,14 @@
             const comment = document.getElementById('photo-comment').value.trim();
             const btn = document.getElementById('btn-save-photo');
             btn.disabled = true;
-            btn.textContent = '⏳ Mengunggah...';
+            btn.textContent = '⏳ Menyimpan...';
 
             try {
                 const canvas = document.getElementById('frame-canvas');
-                const finalDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+                const finalDataUrl = canvas.toDataURL('image/jpeg', 0.7);
 
-                const storagePath = `couples/${roomCode}/transactions/${currentEditingTransactionId}/photo.jpg`;
-                const storageRef = ref(storage, storagePath);
-                await uploadString(storageRef, finalDataUrl, 'data_url');
-                const downloadUrl = await getDownloadURL(storageRef);
-
+                // ⚠️ Base64 bisa besar (~500KB-2MB). Firestore max 1MB per doc.
+                // Kita simpan base64 langsung di field photo.data
                 const transactions = [...config.transactions];
                 const idx = transactions.findIndex(t => t.id === currentEditingTransactionId);
                 if (idx !== -1) {
@@ -886,7 +877,7 @@
                     const newT = {
                         ...oldT,
                         photo: {
-                            url: downloadUrl,
+                            data: finalDataUrl,
                             frame: selectedFrame,
                             comment: comment,
                             comments: oldT.photo && oldT.photo.comments ? oldT.photo.comments : []
@@ -900,7 +891,7 @@
                 alert('Foto berhasil disimpan! 📸✨');
             } catch (err) {
                 console.error(err);
-                alert('Gagal upload foto: ' + err.message);
+                alert('Gagal simpan foto: ' + err.message);
             } finally {
                 btn.disabled = false;
                 btn.textContent = '💾 Simpan Foto';
@@ -917,7 +908,7 @@
 
             document.getElementById('preview-title').textContent = `📸 Foto ${t.person === 'boy' ? config.boyName : config.girlName}`;
             document.getElementById('preview-image-container').innerHTML = `
-                <img src="${t.photo.url}" alt="Preview" style="border: 4px solid #fce4ec;">
+                <img src="${t.photo.data}" alt="Preview" style="border: 4px solid #fce4ec;">
             `;
 
             renderComments(t);
@@ -991,11 +982,6 @@
             if (!confirm('Yakin mau hapus foto ini? 🥺')) return;
             const t = config.transactions.find(tr => tr.id === currentPreviewTransactionId);
             if (!t || !t.photo) return;
-
-            try {
-                const photoRef = ref(storage, `couples/${roomCode}/transactions/${t.id}/photo.jpg`);
-                await deleteObject(photoRef);
-            } catch(e) { console.log('Storage file mungkin sudah terhapus'); }
 
             const oldT = { ...t };
             const newT = { ...oldT };
@@ -1270,7 +1256,7 @@
 
             sortedTransactions.forEach((t, idx) => {
                 const name = t.person === 'boy' ? config.boyName : config.girlName;
-                const hasPhoto = t.photo && t.photo.url ? '✅ Ada' : '❌ Belum';
+                const hasPhoto = t.photo && t.photo.data ? '✅ Ada' : '❌ Belum';
                 const row = worksheet.addRow([
                     new Date(t.date).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }),
                     `${t.person === 'boy' ? '👦' : '👧'} ${name}`,
@@ -1320,7 +1306,7 @@
 
                 // 📸 Styling khusus kolom Foto
                 const photoCell = row.getCell(6);
-                if (t.photo && t.photo.url) {
+                if (t.photo && t.photo.data) {
                     photoCell.font = { name: 'Calibri', size: 10, bold: true, color: { argb: 'FF2E7D32' } };
                 } else {
                     photoCell.font = { name: 'Calibri', size: 10, color: { argb: 'FFAAAAAA' } };
