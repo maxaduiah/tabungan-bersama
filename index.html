@@ -1216,41 +1216,158 @@
             }
         };
 
-        // ═══════════════════════════════════════════════════════
-        // DRAG & DROP STICKERS
-        // ═══════════════════════════════════════════════════════
-        let draggedEmoji = null;
-        document.querySelectorAll('.sticker-item, .character').forEach(el => {
-            el.addEventListener('dragstart', (e) => {
-                draggedEmoji = el.getAttribute('data-emoji') || el.querySelector('.character-avatar').textContent;
-                e.dataTransfer.effectAllowed = 'copy';
-            });
+// ═══════════════════════════════════════════════════════
+// DRAG & DROP STICKERS (Desktop + Android + iOS)
+// ═══════════════════════════════════════════════════════
+let draggedEmoji = null;
+let touchGhost = null;
+let currentDropTarget = null;
+
+// Desktop / Android (HTML5 DnD)
+document.querySelectorAll('.sticker-item, .character').forEach(el => {
+    el.addEventListener('dragstart', (e) => {
+        draggedEmoji = el.getAttribute('data-emoji') || el.querySelector('.character-avatar').textContent;
+        e.dataTransfer.effectAllowed = 'copy';
+    });
+});
+
+window.allowDrop = function (e) {
+    e.preventDefault();
+};
+
+window.dropSticker = async function (e, id) {
+    e.preventDefault();
+    if (!draggedEmoji) return;
+
+    const transactions = [...config.transactions];
+    const idx = transactions.findIndex(t => t.id === id);
+    if (idx !== -1) {
+        const oldT = transactions[idx];
+        const newT = { ...oldT, sticker: draggedEmoji };
+
+        await updateDocData({ transactions: arrayRemove(oldT) });
+        await updateDocData({ transactions: arrayUnion(newT) });
+    }
+    draggedEmoji = null;
+};
+
+// iOS Touch Support
+function isTouchDevice() {
+    return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+}
+
+if (isTouchDevice()) {
+    let activeTouchId = null;
+
+    document.querySelectorAll('.sticker-item, .character').forEach(el => {
+        el.addEventListener('touchstart', (e) => {
+            const touch = e.touches[0];
+            activeTouchId = touch.identifier;
+            draggedEmoji = el.getAttribute('data-emoji') || el.querySelector('.character-avatar').textContent;
+
+            // Buat ghost element yang ikut jari
+            touchGhost = document.createElement('div');
+            touchGhost.textContent = draggedEmoji;
+            touchGhost.style.cssText = `
+                position: fixed;
+                left: ${touch.clientX - 25}px;
+                top: ${touch.clientY - 25}px;
+                width: 50px;
+                height: 50px;
+                font-size: 2rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                pointer-events: none;
+                z-index: 99999;
+                opacity: 0.9;
+                transform: scale(1.2);
+                text-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            `;
+            document.body.appendChild(touchGhost);
+
+            // Haptic feedback kalau support
+            if (navigator.vibrate) navigator.vibrate(20);
+        }, { passive: false });
+
+        el.addEventListener('touchmove', (e) => {
+            if (!touchGhost) return;
+            e.preventDefault(); // prevent scroll saat drag
+
+            const touch = [...e.changedTouches].find(t => t.identifier === activeTouchId);
+            if (!touch) return;
+
+            touchGhost.style.left = (touch.clientX - 25) + 'px';
+            touchGhost.style.top = (touch.clientY - 25) + 'px';
+
+            // Deteksi element di bawah jari
+            touchGhost.style.display = 'none';
+            const elemBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+            touchGhost.style.display = 'flex';
+
+            const cell = elemBelow?.closest('.sticker-cell');
+            
+            // Reset highlight lama
+            if (currentDropTarget && currentDropTarget !== cell) {
+                currentDropTarget.style.background = '';
+                currentDropTarget.style.borderRadius = '';
+            }
+
+            if (cell) {
+                cell.style.background = '#fce4ec';
+                cell.style.borderRadius = '8px';
+                currentDropTarget = cell;
+            } else {
+                currentDropTarget = null;
+            }
+        }, { passive: false });
+
+        el.addEventListener('touchend', (e) => {
+            const touch = [...e.changedTouches].find(t => t.identifier === activeTouchId);
+            if (!touch || !draggedEmoji) {
+                cleanupTouch();
+                return;
+            }
+
+            // Sembunyikan ghost buat deteksi element bawah
+            if (touchGhost) touchGhost.style.display = 'none';
+            const elemBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+            if (touchGhost) touchGhost.style.display = 'flex';
+
+            const cell = elemBelow?.closest('.sticker-cell');
+            if (cell) {
+                const row = cell.closest('tr');
+                const id = row?.getAttribute('data-id');
+                if (id) {
+                    // Trigger drop
+                    dropSticker({ preventDefault: () => {} }, id);
+                    // Animasi
+                    cell.style.transform = 'scale(1.4)';
+                    setTimeout(() => cell.style.transform = 'scale(1)', 200);
+                    if (navigator.vibrate) navigator.vibrate([30, 50, 30]);
+                }
+            }
+
+            cleanupTouch();
         });
 
-        window.allowDrop = function (e) {
-            e.preventDefault();
-        };
+        el.addEventListener('touchcancel', cleanupTouch);
+    });
+}
 
-        window.dropSticker = async function (e, id) {
-            e.preventDefault();
-            if (!draggedEmoji) return;
-
-            const transactions = [...config.transactions];
-            const idx = transactions.findIndex(t => t.id === id);
-            if (idx !== -1) {
-                // Remove old
-                const oldT = transactions[idx];
-                const newT = { ...oldT, sticker: draggedEmoji };
-
-                await updateDocData({
-                    transactions: arrayRemove(oldT)
-                });
-                await updateDocData({
-                    transactions: arrayUnion(newT)
-                });
-            }
-            draggedEmoji = null;
-        };
+function cleanupTouch() {
+    if (touchGhost) {
+        touchGhost.remove();
+        touchGhost = null;
+    }
+    if (currentDropTarget) {
+        currentDropTarget.style.background = '';
+        currentDropTarget.style.borderRadius = '';
+        currentDropTarget = null;
+    }
+    draggedEmoji = null;
+    activeTouchId = null;
+}
 
         // ═══════════════════════════════════════════════════════
         // EDIT CONFIG
