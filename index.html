@@ -1,18 +1,12 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>💕 Tabungan Benopi</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
             font-family: 'Nunito', sans-serif;
             background: linear-gradient(135deg, #ffe4ec 0%, #e0f7fa 50%, #fff9c4 100%);
@@ -20,763 +14,195 @@
             padding: 20px;
             color: #444;
         }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        .header h1 {
-            color: #d81b60;
-            font-size: 2.5rem;
-            font-weight: 800;
-            text-shadow: 3px 3px 0px #fff, 5px 5px 15px rgba(216, 27, 96, 0.2);
-        }
-
-        .header p {
-            color: #888;
-            margin-top: 8px;
-            font-size: 1rem;
-        }
-
-        .edit-target {
-            background: none;
-            border: none;
-            color: #d81b60;
-            cursor: pointer;
-            font-size: 0.9rem;
-            text-decoration: underline;
-        }
-
+        .container { max-width: 800px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 30px; animation: float 3s ease-in-out infinite; }
+        .header h1 { color: #d81b60; font-size: 2.5rem; font-weight: 800; text-shadow: 3px 3px 0px #fff, 5px 5px 15px rgba(216,27,96,0.2); }
+        .header p { color: #888; margin-top: 8px; font-size: 1rem; }
+        .edit-target { background: none; border: none; color: #d81b60; cursor: pointer; font-size: 0.9rem; text-decoration: underline; }
         .progress-card {
-            background: white;
-            border-radius: 24px;
-            padding: 28px;
-            margin-bottom: 24px;
-            box-shadow: 0 10px 40px rgba(216, 27, 96, 0.12);
-            border: 3px solid #fce4ec;
-            position: relative;
-            overflow: hidden;
+            background: white; border-radius: 24px; padding: 28px; margin-bottom: 24px;
+            box-shadow: 0 10px 40px rgba(216,27,96,0.12); border: 3px solid #fce4ec;
+            position: relative; overflow: hidden;
         }
-
         .progress-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -10%;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(252, 228, 236, 0.5) 0%, transparent 70%);
-            border-radius: 50%;
+            content: ''; position: absolute; top: -50%; right: -10%; width: 200px; height: 200px;
+            background: radial-gradient(circle, rgba(252,228,236,0.5) 0%, transparent 70%); border-radius: 50%;
         }
-
-        .progress-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .progress-amount {
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: #d81b60;
-        }
-
-        .progress-sub {
-            font-size: 0.9rem;
-            color: #888;
-            margin-top: 4px;
-        }
-
-        .progress-icon {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, #fce4ec, #f8bbd0);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            box-shadow: 0 4px 15px rgba(216, 27, 96, 0.2);
-            border: 4px solid white;
-        }
-
-        .progress-bar-container {
-            background: #f5f5f5;
-            border-radius: 12px;
-            height: 20px;
-            overflow: hidden;
-            position: relative;
-            z-index: 1;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #f48fb1, #d81b60, #ad1457);
-            border-radius: 12px;
-            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-        }
-
-        .progress-bar::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            animation: shimmer 2s infinite;
-        }
-
-        .progress-text {
-            text-align: center;
-            margin-top: 10px;
-            font-size: 0.95rem;
-            color: #d81b60;
-            font-weight: 700;
-            position: relative;
-            z-index: 1;
-        }
-
-        .characters {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 30px;
-            margin-bottom: 28px;
-        }
-
-        .character {
-            text-align: center;
-            cursor: grab;
-            transition: transform 0.2s;
-        }
-
-        .character:active {
-            cursor: grabbing;
-            transform: scale(0.95);
-        }
-
-        .character-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-            border: 4px solid white;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .character:hover .character-avatar {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .character-boy .character-avatar {
-            background: linear-gradient(135deg, #bbdefb, #90caf9);
-        }
-
-        .character-girl .character-avatar {
-            background: linear-gradient(135deg, #f8bbd0, #f48fb1);
-        }
-
-        .character-name {
-            margin-top: 8px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: #555;
-            cursor: pointer;
-        }
-
-        .character-name:hover {
-            color: #d81b60;
-        }
-
-        .heart-divider {
-            font-size: 2rem;
-            animation: heartbeat 1.5s ease-in-out infinite;
-        }
-
-        .card {
-            background: white;
-            border-radius: 24px;
-            padding: 24px;
-            margin-bottom: 24px;
-            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.06);
-            border: 2px solid transparent;
-            transition: border-color 0.3s;
-        }
-
-        .card:hover {
-            border-color: #fce4ec;
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .card-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #333;
-        }
-
+        .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; position: relative; z-index: 1; }
+        .progress-amount { font-size: 2.2rem; font-weight: 800; color: #d81b60; }
+        .progress-sub { font-size: 0.9rem; color: #888; margin-top: 4px; }
+        .progress-icon { width: 70px; height: 70px; background: linear-gradient(135deg, #fce4ec, #f8bbd0); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; box-shadow: 0 4px 15px rgba(216,27,96,0.2); border: 4px solid white; }
+        .progress-bar-container { background: #f5f5f5; border-radius: 12px; height: 20px; overflow: hidden; position: relative; z-index: 1; }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, #f48fb1, #d81b60, #ad1457); border-radius: 12px; transition: width 1s cubic-bezier(0.4,0,0.2,1); position: relative; }
+        .progress-bar::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); animation: shimmer 2s infinite; }
+        .progress-text { text-align: center; margin-top: 10px; font-size: 0.95rem; color: #d81b60; font-weight: 700; position: relative; z-index: 1; }
+        .characters { display: flex; justify-content: center; align-items: center; gap: 30px; margin-bottom: 28px; }
+        .character { text-align: center; cursor: grab; transition: transform 0.2s; }
+        .character:active { cursor: grabbing; transform: scale(0.95); }
+        .character-avatar { width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; box-shadow: 0 6px 20px rgba(0,0,0,0.1); border: 4px solid white; transition: transform 0.3s, box-shadow 0.3s; }
+        .character:hover .character-avatar { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+        .character-boy .character-avatar { background: linear-gradient(135deg, #bbdefb, #90caf9); }
+        .character-girl .character-avatar { background: linear-gradient(135deg, #f8bbd0, #f48fb1); }
+        .character-name { margin-top: 8px; font-size: 0.85rem; font-weight: 700; color: #555; cursor: pointer; }
+        .character-name:hover { color: #d81b60; }
+        .heart-divider { font-size: 2rem; animation: heartbeat 1.5s ease-in-out infinite; }
+        .card { background: white; border-radius: 24px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 30px rgba(0,0,0,0.06); border: 2px solid transparent; transition: border-color 0.3s; }
+        .card:hover { border-color: #fce4ec; }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
+        .card-title { font-size: 1.1rem; font-weight: 700; color: #333; }
         .btn {
-            background: linear-gradient(135deg, #d81b60, #ad1457);
-            color: white;
-            border: none;
-            border-radius: 20px;
-            padding: 10px 20px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            font-weight: 700;
-            font-family: 'Nunito', sans-serif;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 15px rgba(216, 27, 96, 0.3);
+            background: linear-gradient(135deg, #d81b60, #ad1457); color: white; border: none; border-radius: 20px;
+            padding: 10px 20px; font-size: 0.85rem; cursor: pointer; font-weight: 700; font-family: 'Nunito', sans-serif;
+            transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 15px rgba(216,27,96,0.3);
         }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(216, 27, 96, 0.4);
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(216,27,96,0.4); }
+        .btn:active { transform: translateY(0); }
+        .btn-secondary { background: linear-gradient(135deg, #42a5f5, #1976d2); box-shadow: 0 4px 15px rgba(25,118,210,0.3); }
+        .btn-secondary:hover { box-shadow: 0 6px 20px rgba(25,118,210,0.4); }
+        .btn-danger { background: linear-gradient(135deg, #ef5350, #c62828); box-shadow: 0 4px 15px rgba(198,40,40,0.3); padding: 6px 12px; font-size: 0.75rem; }
+        .btn-ghost { background: #f5f5f5; color: #666; box-shadow: none; }
+        .btn-ghost:hover { background: #e0e0e0; }
+        .btn-success { background: linear-gradient(135deg, #66bb6a, #2e7d32); box-shadow: 0 4px 15px rgba(46,125,50,0.3); }
+        .btn-success:hover { box-shadow: 0 6px 20px rgba(46,125,50,0.4); }
+        .table-container { overflow-x: auto; }
+        table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.9rem; }
+        th { color: #888; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 8px; text-align: left; font-weight: 700; border-bottom: 2px solid #f0f0f0; }
+        td { padding: 14px 8px; border-bottom: 1px solid #f5f5f5; vertical-align: middle; }
+        tr { transition: background 0.2s; }
+        tr:hover { background: #fff8fb; }
+        .amount-in { color: #2e7d32; font-weight: 700; }
+        .sticker-cell { text-align: center; font-size: 1.3rem; cursor: pointer; min-width: 40px; transition: transform 0.2s; }
+        .sticker-cell:hover { transform: scale(1.3); }
+        .sticker-cell.drag-over { background: #fce4ec; border-radius: 8px; }
+        .photo-cell { text-align: center; min-width: 50px; }
+        .photo-thumb {
+            width: 44px; height: 44px; border-radius: 12px; object-fit: cover; cursor: pointer;
+            border: 2px solid #fce4ec; transition: transform 0.2s, box-shadow 0.2s; display: inline-block;
         }
-
-        .btn:active {
-            transform: translateY(0);
+        .photo-thumb:hover { transform: scale(1.15); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .photo-placeholder {
+            width: 44px; height: 44px; border-radius: 12px; background: #f5f5f5; display: inline-flex;
+            align-items: center; justify-content: center; font-size: 1.2rem; color: #ccc; cursor: pointer;
+            border: 2px dashed #e0e0e0; transition: all 0.2s;
         }
-
-        .btn-secondary {
-            background: linear-gradient(135deg, #42a5f5, #1976d2);
-            box-shadow: 0 4px 15px rgba(25, 118, 210, 0.3);
-        }
-
-        .btn-secondary:hover {
-            box-shadow: 0 6px 20px rgba(25, 118, 210, 0.4);
-        }
-
-        .btn-danger {
-            background: linear-gradient(135deg, #ef5350, #c62828);
-            box-shadow: 0 4px 15px rgba(198, 40, 40, 0.3);
-            padding: 6px 12px;
-            font-size: 0.75rem;
-        }
-
-        .btn-ghost {
-            background: #f5f5f5;
-            color: #666;
-            box-shadow: none;
-        }
-
-        .btn-ghost:hover {
-            background: #e0e0e0;
-        }
-
-        .table-container {
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            font-size: 0.9rem;
-        }
-
-        th {
-            color: #888;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            padding: 12px 8px;
-            text-align: left;
-            font-weight: 700;
-            border-bottom: 2px solid #f0f0f0;
-        }
-
-        td {
-            padding: 14px 8px;
-            border-bottom: 1px solid #f5f5f5;
-            vertical-align: middle;
-        }
-
-        tr {
-            transition: background 0.2s;
-        }
-
-        tr:hover {
-            background: #fff8fb;
-        }
-
-        .amount-in {
-            color: #2e7d32;
-            font-weight: 700;
-        }
-
-        .sticker-cell {
-            text-align: center;
-            font-size: 1.3rem;
-            cursor: pointer;
-            min-width: 40px;
-            transition: transform 0.2s;
-        }
-
-        .sticker-cell:hover {
-            transform: scale(1.3);
-        }
-
-        .sticker-cell.drag-over {
-            background: #fce4ec;
-            border-radius: 8px;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            color: #bbb;
-        }
-
-        .empty-state-icon {
-            font-size: 3rem;
-            margin-bottom: 12px;
-        }
-
-        .sticker-palette {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 12px;
-        }
-
+        .photo-placeholder:hover { background: #fce4ec; border-color: #f48fb1; color: #d81b60; }
+        .empty-state { text-align: center; padding: 40px; color: #bbb; }
+        .empty-state-icon { font-size: 3rem; margin-bottom: 12px; }
+        .sticker-palette { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; }
         .sticker-item {
-            width: 50px;
-            height: 50px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.6rem;
-            cursor: grab;
-            border: 3px solid white;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-            transition: transform 0.2s, box-shadow 0.2s;
-            user-select: none;
+            width: 50px; height: 50px; border-radius: 14px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.6rem; cursor: grab; border: 3px solid white; box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            transition: transform 0.2s, box-shadow 0.2s; user-select: none;
         }
-
-        .sticker-item:hover {
-            transform: translateY(-4px) scale(1.1);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        .sticker-item:active {
-            cursor: grabbing;
-        }
-
-        .hint {
-            font-size: 0.8rem;
-            color: #aaa;
-            margin-top: 12px;
-            text-align: center;
-        }
-
+        .sticker-item:hover { transform: translateY(-4px) scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+        .sticker-item:active { cursor: grabbing; }
+        .hint { font-size: 0.8rem; color: #aaa; margin-top: 12px; text-align: center; }
         .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(4px);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 1000;
+            align-items: center; justify-content: center; padding: 20px;
         }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
+        .modal-overlay.active { display: flex; }
         .modal {
-            background: white;
-            border-radius: 24px;
-            padding: 28px;
-            width: 100%;
-            max-width: 420px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-            animation: modalIn 0.3s ease;
+            background: white; border-radius: 24px; padding: 28px; width: 100%; max-width: 420px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2); animation: modalIn 0.3s ease; max-height: 90vh; overflow-y: auto;
         }
-
-        @keyframes modalIn {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+        .modal-wide { max-width: 480px; }
+        @keyframes modalIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        .modal-title { font-size: 1.2rem; font-weight: 800; color: #333; margin-bottom: 20px; }
+        .form-group { margin-bottom: 16px; }
+        .form-label { display: block; font-size: 0.8rem; font-weight: 700; color: #666; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-input, .form-select {
+            width: 100%; padding: 12px 16px; border: 2px solid #e0e0e0; border-radius: 14px;
+            font-family: 'Nunito', sans-serif; font-size: 1rem; transition: border-color 0.2s; outline: none;
         }
+        .form-input:focus, .form-select:focus { border-color: #f48fb1; }
+        .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+        .modal-actions .btn { flex: 1; }
+        .btn-cancel { background: #f5f5f5; color: #666; box-shadow: none; }
+        .btn-cancel:hover { background: #e0e0e0; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 24px; }
+        .stat-item { background: white; border-radius: 20px; padding: 16px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 2px solid transparent; transition: all 0.3s; }
+        .stat-item:hover { border-color: #fce4ec; transform: translateY(-2px); }
+        .stat-value { font-size: 1.3rem; font-weight: 800; color: #d81b60; }
+        .stat-label { font-size: 0.75rem; color: #888; margin-top: 4px; font-weight: 600; }
+        .sync-badge { display: inline-flex; align-items: center; gap: 6px; background: #e8f5e9; color: #2e7d32; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
+        .sync-badge.offline { background: #ffebee; color: #c62828; }
+        .sync-badge.syncing { background: #fff8e1; color: #f57f17; }
+        .room-code-box { background: linear-gradient(135deg, #fce4ec, #f8bbd0); border-radius: 16px; padding: 16px; margin-bottom: 20px; text-align: center; border: 2px dashed #f48fb1; }
+        .room-code-box h3 { color: #ad1457; font-size: 1rem; margin-bottom: 8px; }
+        .room-code { font-family: monospace; font-size: 1.5rem; font-weight: 800; color: #d81b60; background: white; padding: 8px 20px; border-radius: 12px; display: inline-block; letter-spacing: 2px; }
+        .room-code-box p { font-size: 0.8rem; color: #888; margin-top: 8px; }
+        .login-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, #ffe4ec 0%, #e0f7fa 50%, #fff9c4 100%); z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .login-box { background: white; border-radius: 28px; padding: 40px; width: 100%; max-width: 400px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); text-align: center; }
+        .login-box h2 { color: #d81b60; font-size: 1.8rem; margin-bottom: 8px; }
+        .login-box p { color: #888; margin-bottom: 24px; font-size: 0.95rem; }
+        .login-box .form-input { text-align: center; font-size: 1.2rem; letter-spacing: 1px; font-weight: 700; color: #d81b60; }
+        .login-box .btn { width: 100%; margin-top: 12px; padding: 14px; font-size: 1rem; }
 
-        .modal-title {
-            font-size: 1.2rem;
-            font-weight: 800;
-            color: #333;
-            margin-bottom: 20px;
+        /* Photo Upload Modal Styles */
+        .photo-preview-area {
+            width: 100%; aspect-ratio: 1; background: #f5f5f5; border-radius: 20px;
+            display: flex; align-items: center; justify-content: center; margin-bottom: 16px;
+            overflow: hidden; position: relative; border: 3px dashed #e0e0e0;
         }
-
-        .form-group {
-            margin-bottom: 16px;
+        .photo-preview-area.has-image { border-style: solid; border-color: #f48fb1; }
+        .photo-preview-area img { width: 100%; height: 100%; object-fit: cover; }
+        .photo-preview-area .placeholder-text { text-align: center; color: #aaa; font-size: 0.9rem; }
+        .photo-preview-area .placeholder-text .icon { font-size: 3rem; display: block; margin-bottom: 8px; }
+        .photo-actions { display: flex; gap: 8px; margin-bottom: 16px; }
+        .photo-actions .btn { flex: 1; font-size: 0.8rem; padding: 10px; }
+        .frame-selector { display: flex; gap: 8px; overflow-x: auto; padding: 4px; margin-bottom: 16px; }
+        .frame-option {
+            min-width: 60px; height: 60px; border-radius: 14px; border: 3px solid transparent;
+            display: flex; align-items: center; justify-content: center; font-size: 1.8rem;
+            cursor: pointer; background: #f5f5f5; transition: all 0.2s;
         }
+        .frame-option:hover { transform: scale(1.1); }
+        .frame-option.selected { border-color: #d81b60; background: #fce4ec; box-shadow: 0 4px 12px rgba(216,27,96,0.2); }
+        .frame-label { font-size: 0.7rem; text-align: center; margin-top: 4px; color: #888; }
 
-        .form-label {
-            display: block;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: #666;
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        /* Photo Preview Modal */
+        .photo-preview-modal img { width: 100%; border-radius: 20px; margin-bottom: 16px; }
+        .photo-comment-box {
+            background: #fff8fb; border-radius: 16px; padding: 16px; margin-bottom: 12px;
+            border: 2px solid #fce4ec;
         }
+        .photo-comment-box .comment-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .photo-comment-box .comment-avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #fce4ec, #f8bbd0); display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+        .photo-comment-box .comment-name { font-weight: 700; font-size: 0.9rem; color: #333; }
+        .photo-comment-box .comment-text { color: #666; font-size: 0.9rem; line-height: 1.5; }
+        .photo-comment-box .comment-time { font-size: 0.75rem; color: #aaa; margin-top: 4px; }
+        .comment-input-group { display: flex; gap: 8px; margin-top: 12px; }
+        .comment-input-group .form-input { flex: 1; }
+        .comment-input-group .btn { padding: 10px 16px; }
 
-        .form-input,
-        .form-select {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 14px;
-            font-family: 'Nunito', sans-serif;
-            font-size: 1rem;
-            transition: border-color 0.2s;
-            outline: none;
-        }
-
-        .form-input:focus,
-        .form-select:focus {
-            border-color: #f48fb1;
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .modal-actions .btn {
-            flex: 1;
-        }
-
-        .btn-cancel {
-            background: #f5f5f5;
-            color: #666;
-            box-shadow: none;
-        }
-
-        .btn-cancel:hover {
-            background: #e0e0e0;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-
-        .stat-item {
-            background: white;
-            border-radius: 20px;
-            padding: 16px;
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            border: 2px solid transparent;
-            transition: all 0.3s;
-        }
-
-        .stat-item:hover {
-            border-color: #fce4ec;
-            transform: translateY(-2px);
-        }
-
-        .stat-value {
-            font-size: 1.3rem;
-            font-weight: 800;
-            color: #d81b60;
-        }
-
-        .stat-label {
-            font-size: 0.75rem;
-            color: #888;
-            margin-top: 4px;
-            font-weight: 600;
-        }
-
-        .sync-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: #e8f5e9;
-            color: #2e7d32;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 700;
-        }
-
-        .sync-badge.offline {
-            background: #ffebee;
-            color: #c62828;
-        }
-
-        .sync-badge.syncing {
-            background: #fff8e1;
-            color: #f57f17;
-        }
-
-        .room-code-box {
-            background: linear-gradient(135deg, #fce4ec, #f8bbd0);
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 20px;
-            text-align: center;
-            border: 2px dashed #f48fb1;
-        }
-
-        .room-code-box h3 {
-            color: #ad1457;
-            font-size: 1rem;
-            margin-bottom: 8px;
-        }
-
-        .room-code {
-            font-family: monospace;
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: #d81b60;
-            background: white;
-            padding: 8px 20px;
-            border-radius: 12px;
-            display: inline-block;
-            letter-spacing: 2px;
-        }
-
-        .room-code-box p {
-            font-size: 0.8rem;
-            color: #888;
-            margin-top: 8px;
-        }
-
-        .login-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, #ffe4ec 0%, #e0f7fa 50%, #fff9c4 100%);
-            z-index: 2000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .login-box {
-            background: white;
-            border-radius: 28px;
-            padding: 40px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-            text-align: center;
-        }
-
-        .login-box h2 {
-            color: #d81b60;
-            font-size: 1.8rem;
-            margin-bottom: 8px;
-        }
-
-        .login-box p {
-            color: #888;
-            margin-bottom: 24px;
-            font-size: 0.95rem;
-        }
-
-        .login-box .form-input {
-            text-align: center;
-            font-size: 1.2rem;
-            letter-spacing: 1px;
-            font-weight: 700;
-            color: #d81b60;
-        }
-
-        .login-box .btn {
-            width: 100%;
-            margin-top: 12px;
-            padding: 14px;
-            font-size: 1rem;
-        }
-
-        @keyframes float {
-
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-8px);
-            }
-        }
-
-        @keyframes heartbeat {
-
-            0%,
-            100% {
-                transform: scale(1);
-            }
-
-            14% {
-                transform: scale(1.15);
-            }
-
-            28% {
-                transform: scale(1);
-            }
-
-            42% {
-                transform: scale(1.15);
-            }
-
-            70% {
-                transform: scale(1);
-            }
-        }
-
-        @keyframes shimmer {
-            0% {
-                transform: translateX(-100%);
-            }
-
-            100% {
-                transform: translateX(100%);
-            }
-        }
-
-        @keyframes dropBounce {
-            0% {
-                transform: scale(1.5);
-            }
-
-            50% {
-                transform: scale(0.9);
-            }
-
-            100% {
-                transform: scale(1);
-            }
-        }
-
-        .drop-anim {
-            animation: dropBounce 0.4s ease;
-        }
-
-        .confetti {
-            position: fixed;
-            width: 10px;
-            height: 10px;
-            top: -10px;
-            z-index: 9999;
-            pointer-events: none;
-        }
-
-        @keyframes fall {
-            to {
-                transform: translateY(100vh) rotate(720deg);
-                opacity: 0;
-            }
-        }
+        @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        @keyframes heartbeat { 0%,100% { transform: scale(1); } 14% { transform: scale(1.15); } 28% { transform: scale(1); } 42% { transform: scale(1.15); } 70% { transform: scale(1); } }
+        @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+        @keyframes dropBounce { 0% { transform: scale(1.5); } 50% { transform: scale(0.9); } 100% { transform: scale(1); } }
+        .drop-anim { animation: dropBounce 0.4s ease; }
+        .confetti { position: fixed; width: 10px; height: 10px; top: -10px; z-index: 9999; pointer-events: none; }
+        @keyframes fall { to { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
 
         @media (max-width: 600px) {
-            .header h1 {
-                font-size: 1.8rem;
-            }
-
-            .progress-amount {
-                font-size: 1.6rem;
-            }
-
-            .characters {
-                gap: 20px;
-            }
-
-            .character-avatar {
-                width: 65px;
-                height: 65px;
-                font-size: 2rem;
-            }
-
-            .card {
-                padding: 18px;
-            }
-
-            .card-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
+            .header h1 { font-size: 1.8rem; }
+            .progress-amount { font-size: 1.6rem; }
+            .characters { gap: 20px; }
+            .character-avatar { width: 65px; height: 65px; font-size: 2rem; }
+            .card { padding: 18px; }
+            .card-header { flex-direction: column; align-items: flex-start; }
+            th, td { padding: 10px 6px; font-size: 0.8rem; }
+            .photo-thumb, .photo-placeholder { width: 36px; height: 36px; }
         }
-
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #f48fb1;
-            border-radius: 4px;
-        }
-
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid #fce4ec;
-            border-top-color: #d81b60;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #f48fb1; border-radius: 4px; }
+        .loading { display: inline-block; width: 20px; height: 20px; border: 3px solid #fce4ec; border-top-color: #d81b60; border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
+<base target="_blank">
 </head>
-
 <body>
     <!-- Login Overlay -->
     <div class="login-overlay" id="login-overlay">
@@ -786,8 +212,7 @@
             <p>Masukkan kode pasangan kalian untuk mulai nabung bareng!</p>
             <div class="form-group">
                 <label class="form-label" style="text-align: center;">Kode Pasangan</label>
-                <input type="text" class="form-input" id="room-code-input" placeholder="codenya apa hayoo"
-                    maxlength="30">
+                <input type="text" class="form-input" id="room-code-input" placeholder="codenya apa hayoo" maxlength="30">
             </div>
             <button class="btn" onclick="joinRoom()">🚀 Mulai Nabung!</button>
             <p style="font-size: 0.8rem; color: #aaa; margin-top: 16px;">
@@ -803,10 +228,8 @@
             <h3>🔗 Kode Pasangan</h3>
             <div class="room-code" id="display-room-code">-</div>
             <p>Share kode ini ke pacar kamu via WhatsApp! 📲</p>
-            <button class="btn btn-ghost" style="margin-top: 8px; font-size: 0.75rem;" onclick="copyRoomCode()">📋 Copy
-                Kode</button>
-            <button class="btn btn-ghost" style="margin-top: 8px; font-size: 0.75rem; margin-left: 6px;"
-                onclick="logout()">🚪 Ganti Kode</button>
+            <button class="btn btn-ghost" style="margin-top: 8px; font-size: 0.75rem;" onclick="copyRoomCode()">📋 Copy Kode</button>
+            <button class="btn btn-ghost" style="margin-top: 8px; font-size: 0.75rem; margin-left: 6px;" onclick="logout()">🚪 Ganti Kode</button>
         </div>
 
         <!-- Header -->
@@ -819,9 +242,7 @@
 
         <!-- Sync Status -->
         <div style="text-align: center; margin-bottom: 16px;">
-            <span class="sync-badge" id="sync-status">
-                <span class="loading"></span> Menyambungkan...
-            </span>
+            <span class="sync-badge" id="sync-status"><span class="loading"></span> Menyambungkan...</span>
         </div>
 
         <!-- Stats -->
@@ -877,8 +298,7 @@
             <div class="card-header">
                 <div class="card-title">📒 Riwayat Tabungan</div>
                 <div>
-                    <button class="btn btn-secondary" onclick="exportCSV()" style="margin-right: 8px;">📥
-                        Export</button>
+                    <button class="btn btn-secondary" onclick="exportXLSX()" style="margin-right: 8px;">📥 Export</button>
                     <button class="btn" onclick="openModal()">+ Tambah</button>
                 </div>
             </div>
@@ -891,6 +311,7 @@
                             <th>Keterangan</th>
                             <th style="text-align: right;">Jumlah</th>
                             <th style="text-align: center;">Stiker</th>
+                            <th style="text-align: center;">Foto</th>
                             <th style="text-align: center;">Aksi</th>
                         </tr>
                     </thead>
@@ -908,42 +329,27 @@
         <div class="card" style="border-color: #fff9c4;">
             <div class="card-title">🎨 Stiker Lucu (Drag ke tabel!)</div>
             <div class="sticker-palette" id="sticker-palette">
-                <div class="sticker-item" style="background: #fff8e1; border-color: #ffe082;" draggable="true"
-                    data-emoji="🌟">🌟</div>
-                <div class="sticker-item" style="background: #fce4ec; border-color: #f48fb1;" draggable="true"
-                    data-emoji="💖">💖</div>
-                <div class="sticker-item" style="background: #e8f5e9; border-color: #a5d6a7;" draggable="true"
-                    data-emoji="🎯">🎯</div>
-                <div class="sticker-item" style="background: #e3f2fd; border-color: #90caf9;" draggable="true"
-                    data-emoji="🚀">🚀</div>
-                <div class="sticker-item" style="background: #fce4ec; border-color: #f8bbd0;" draggable="true"
-                    data-emoji="🐷">🐷</div>
-                <div class="sticker-item" style="background: #f3e5f5; border-color: #ce93d8;" draggable="true"
-                    data-emoji="🐱">🐱</div>
-                <div class="sticker-item" style="background: #fff3e0; border-color: #ffcc80;" draggable="true"
-                    data-emoji="🐶">🐶</div>
-                <div class="sticker-item" style="background: #efebe9; border-color: #bcaaa4;" draggable="true"
-                    data-emoji="🐻">🐻</div>
-                <div class="sticker-item" style="background: #eceff1; border-color: #b0bec5;" draggable="true"
-                    data-emoji="🐼">🐼</div>
-                <div class="sticker-item" style="background: #fce4ec; border-color: #f48fb1;" draggable="true"
-                    data-emoji="🐰">🐰</div>
-                <div class="sticker-item" style="background: #fff8e1; border-color: #ffe082;" draggable="true"
-                    data-emoji="🦊">🦊</div>
-                <div class="sticker-item" style="background: #e3f2fd; border-color: #90caf9;" draggable="true"
-                    data-emoji="🐧">🐧</div>
-                <div class="sticker-item" style="background: #e8f5e9; border-color: #a5d6a7;" draggable="true"
-                    data-emoji="🐸">🐸</div>
-                <div class="sticker-item" style="background: #fce4ec; border-color: #f8bbd0;" draggable="true"
-                    data-emoji="🦄">🦄</div>
-                <div class="sticker-item" style="background: #fff3e0; border-color: #ffcc80;" draggable="true"
-                    data-emoji="🦋">🦋</div>
+                <div class="sticker-item" style="background: #fff8e1; border-color: #ffe082;" draggable="true" data-emoji="🌟">🌟</div>
+                <div class="sticker-item" style="background: #fce4ec; border-color: #f48fb1;" draggable="true" data-emoji="💖">💖</div>
+                <div class="sticker-item" style="background: #e8f5e9; border-color: #a5d6a7;" draggable="true" data-emoji="🎯">🎯</div>
+                <div class="sticker-item" style="background: #e3f2fd; border-color: #90caf9;" draggable="true" data-emoji="🚀">🚀</div>
+                <div class="sticker-item" style="background: #fce4ec; border-color: #f8bbd0;" draggable="true" data-emoji="🐷">🐷</div>
+                <div class="sticker-item" style="background: #f3e5f5; border-color: #ce93d8;" draggable="true" data-emoji="🐱">🐱</div>
+                <div class="sticker-item" style="background: #fff3e0; border-color: #ffcc80;" draggable="true" data-emoji="🐶">🐶</div>
+                <div class="sticker-item" style="background: #efebe9; border-color: #bcaaa4;" draggable="true" data-emoji="🐻">🐻</div>
+                <div class="sticker-item" style="background: #eceff1; border-color: #b0bec5;" draggable="true" data-emoji="🐼">🐼</div>
+                <div class="sticker-item" style="background: #fce4ec; border-color: #f48fb1;" draggable="true" data-emoji="🐰">🐰</div>
+                <div class="sticker-item" style="background: #fff8e1; border-color: #ffe082;" draggable="true" data-emoji="🦊">🦊</div>
+                <div class="sticker-item" style="background: #e3f2fd; border-color: #90caf9;" draggable="true" data-emoji="🐧">🐧</div>
+                <div class="sticker-item" style="background: #e8f5e9; border-color: #a5d6a7;" draggable="true" data-emoji="🐸">🐸</div>
+                <div class="sticker-item" style="background: #fce4ec; border-color: #f8bbd0;" draggable="true" data-emoji="🦄">🦄</div>
+                <div class="sticker-item" style="background: #fff3e0; border-color: #ffcc80;" draggable="true" data-emoji="🦋">🦋</div>
             </div>
             <div class="hint">💡 Drag stiker dan lepas di kolom stiker tabel untuk menandai transaksi favorit!</div>
         </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Add Transaction Modal -->
     <div class="modal-overlay" id="modal">
         <div class="modal">
             <div class="modal-title" id="modal-title">✨ Tambah Tabungan</div>
@@ -973,14 +379,78 @@
         </div>
     </div>
 
+    <!-- Photo Upload Modal -->
+    <div class="modal-overlay" id="photo-modal">
+        <div class="modal modal-wide">
+            <div class="modal-title">📸 Tambah Foto Bukti</div>
+            <div class="photo-preview-area" id="photo-preview-area">
+                <div class="placeholder-text">
+                    <span class="icon">📷</span>
+                    <span>Belum ada foto</span>
+                </div>
+            </div>
+            <div class="photo-actions">
+                <button class="btn btn-secondary" onclick="triggerFileInput('camera')">🤳 Kamera</button>
+                <button class="btn btn-secondary" onclick="triggerFileInput('gallery')">🖼️ Galeri</button>
+                <button class="btn btn-danger" onclick="clearPhoto()" id="btn-clear-photo" style="display:none;">🗑️ Hapus</button>
+            </div>
+            <input type="file" id="file-input" accept="image/*" style="display:none;" onchange="handleFileSelect(event)">
+            <input type="file" id="camera-input" accept="image/*" capture="user" style="display:none;" onchange="handleFileSelect(event)">
+
+            <div class="form-label">🖼️ Pilih Frame Lucu</div>
+            <div class="frame-selector" id="frame-selector">
+                <div class="frame-option selected" data-frame="none" onclick="selectFrame('none')">✨</div>
+                <div class="frame-option" data-frame="💖" onclick="selectFrame('💖')">💖</div>
+                <div class="frame-option" data-frame="🌟" onclick="selectFrame('🌟')">🌟</div>
+                <div class="frame-option" data-frame="🐷" onclick="selectFrame('🐷')">🐷</div>
+                <div class="frame-option" data-frame="🐱" onclick="selectFrame('🐱')">🐱</div>
+                <div class="frame-option" data-frame="🐶" onclick="selectFrame('🐶')">🐶</div>
+                <div class="frame-option" data-frame="🐻" onclick="selectFrame('🐻')">🐻</div>
+                <div class="frame-option" data-frame="🐰" onclick="selectFrame('🐰')">🐰</div>
+                <div class="frame-option" data-frame="🦄" onclick="selectFrame('🦄')">🦄</div>
+                <div class="frame-option" data-frame="🦋" onclick="selectFrame('🦋')">🦋</div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">💬 Komentar / Caption</label>
+                <input type="text" class="form-input" id="photo-comment" placeholder="Contoh: Selfie bareng pas nabung! 💕">
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn btn-cancel" onclick="closePhotoModal()">Batal</button>
+                <button class="btn btn-success" onclick="savePhoto()" id="btn-save-photo" disabled>💾 Simpan Foto</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Photo Preview Modal (View) -->
+    <div class="modal-overlay" id="preview-modal">
+        <div class="modal modal-wide">
+            <div class="modal-title" id="preview-title">📸 Lihat Foto</div>
+            <div id="preview-image-container"></div>
+            <div id="preview-comments"></div>
+            <div class="comment-input-group">
+                <input type="text" class="form-input" id="new-comment-text" placeholder="Tulis komentar... 💬">
+                <button class="btn" onclick="addComment()">Kirim</button>
+            </div>
+            <div class="modal-actions" style="margin-top: 16px;">
+                <button class="btn btn-cancel" onclick="closePreviewModal()">Tutup</button>
+                <button class="btn btn-danger" onclick="deletePhoto()">🗑️ Hapus Foto</button>
+            </div>
+        </div>
+    </div>
+
+    <canvas id="frame-canvas"></canvas>
+
+    <!-- ExcelJS Library -->
+    <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+
     <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
         import { getFirestore, doc, setDoc, getDoc, onSnapshot, updateDoc, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+        import { getStorage, ref, uploadString, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
-        // ═══════════════════════════════════════════════════════
-        // GANTI INI DENGAN CONFIG DARI FIREBASE CONSOLE KAMU!
-        // ═══════════════════════════════════════════════════════
         const firebaseConfig = {
             apiKey: "AIzaSyCiWew1RIZUrbbLSSIW9hZ_OBCanJS90ds",
             authDomain: "tabungan-benopi.firebaseapp.com",
@@ -990,16 +460,15 @@
             appId: "1:455639943894:web:362b8aea031cf567cd5777",
             measurementId: "G-1W4E03VW1T"
         };
-        // ═══════════════════════════════════════════════════════
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const storage = getStorage(app);
 
         let roomCode = localStorage.getItem('tabunganRoomCode') || '';
         let unsubscribe = null;
         let currentData = null;
 
-        // Default config
         let config = {
             targetName: '🏠 Judul Tabungan',
             targetAmount: 2000000,
@@ -1008,6 +477,12 @@
             girlName: 'Nopay',
             transactions: []
         };
+
+        // Photo upload state
+        let currentPhotoData = null;
+        let selectedFrame = 'none';
+        let currentEditingTransactionId = null;
+        let currentPreviewTransactionId = null;
 
         // ═══════════════════════════════════════════════════════
         // ROOM / LOGIN
@@ -1021,14 +496,8 @@
 
         window.joinRoom = function () {
             const code = document.getElementById('room-code-input').value.trim().toLowerCase().replace(/\s+/g, '-');
-            if (!code) {
-                alert('Masukkan kode pasangan dulu ya! 💕');
-                return;
-            }
-            if (code.length < 3) {
-                alert('Kode minimal 3 karakter ya! 😊');
-                return;
-            }
+            if (!code) { alert('Masukkan kode pasangan dulu ya! 💕'); return; }
+            if (code.length < 3) { alert('Kode minimal 3 karakter ya! 😊'); return; }
             roomCode = code;
             localStorage.setItem('tabunganRoomCode', roomCode);
             document.getElementById('login-overlay').style.display = 'none';
@@ -1054,18 +523,13 @@
         // ═══════════════════════════════════════════════════════
         async function startListening(code) {
             const docRef = doc(db, 'couples', code);
-
-            // Try to get existing doc
             const snap = await getDoc(docRef);
             if (!snap.exists()) {
-                // Create new doc with defaults
                 await setDoc(docRef, config);
             } else {
                 currentData = snap.data();
                 config = { ...config, ...currentData };
             }
-
-            // Real-time listener
             unsubscribe = onSnapshot(docRef, (docSnap) => {
                 if (docSnap.exists()) {
                     currentData = docSnap.data();
@@ -1134,18 +598,26 @@
                 emptyState.style.display = 'none';
                 tbody.innerHTML = [...transactions]
                     .sort((a, b) => new Date(b.date) - new Date(a.date))
-                    .map(t => `
+                    .map(t => {
+                        const hasPhoto = t.photo && t.photo.url;
+                        return `
                         <tr data-id="${t.id}">
                             <td>${new Date(t.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}</td>
                             <td style="font-weight: 700;">${t.person === 'boy' ? '👦' : '👧'} ${t.person === 'boy' ? config.boyName : config.girlName}</td>
                             <td style="color: #888; font-size: 0.85rem;">${t.note || '-'}</td>
                             <td class="amount-in" style="text-align: right;">+${formatRupiah(t.amount)}</td>
                             <td class="sticker-cell" ondragover="allowDrop(event)" ondrop="dropSticker(event, '${t.id}')">${t.sticker || '✨'}</td>
+                            <td class="photo-cell">
+                                ${hasPhoto
+                                    ? `<img src="${t.photo.url}" class="photo-thumb" onclick="openPhotoPreview('${t.id}')" alt="📸">`
+                                    : `<div class="photo-placeholder" onclick="openPhotoModal('${t.id}')">📷</div>`
+                                }
+                            </td>
                             <td style="text-align: center;">
                                 <button class="btn btn-danger" onclick="deleteTransaction('${t.id}')">🗑️</button>
                             </td>
                         </tr>
-                    `).join('');
+                    `}).join('');
             }
 
             if (percent === 100 && transactions.length > 0) {
@@ -1199,10 +671,7 @@
                 sticker: ''
             };
 
-            await updateDocData({
-                transactions: arrayUnion(newTransaction)
-            });
-
+            await updateDocData({ transactions: arrayUnion(newTransaction) });
             closeModal();
         };
 
@@ -1210,164 +679,475 @@
             if (!confirm('Yakin mau hapus transaksi ini? 🥺')) return;
             const t = config.transactions.find(tr => tr.id === id);
             if (t) {
-                await updateDocData({
-                    transactions: arrayRemove(t)
-                });
+                if (t.photo && t.photo.url) {
+                    try {
+                        const photoRef = ref(storage, `couples/${roomCode}/transactions/${t.id}/photo.jpg`);
+                        await deleteObject(photoRef);
+                    } catch(e) { console.log('Foto mungkin sudah terhapus'); }
+                }
+                await updateDocData({ transactions: arrayRemove(t) });
             }
         };
 
-// ═══════════════════════════════════════════════════════
-// DRAG & DROP STICKERS (Desktop + Android + iOS)
-// ═══════════════════════════════════════════════════════
-let draggedEmoji = null;
-let touchGhost = null;
-let currentDropTarget = null;
+        // ═══════════════════════════════════════════════════════
+        // PHOTO UPLOAD SYSTEM
+        // ═══════════════════════════════════════════════════════
+        window.openPhotoModal = function (transactionId) {
+            currentEditingTransactionId = transactionId;
+            currentPhotoData = null;
+            selectedFrame = 'none';
+            document.getElementById('photo-comment').value = '';
+            document.getElementById('btn-save-photo').disabled = true;
+            document.getElementById('btn-clear-photo').style.display = 'none';
+            resetPhotoPreview();
+            resetFrameSelector();
+            document.getElementById('photo-modal').classList.add('active');
+        };
 
-// Desktop / Android (HTML5 DnD)
-document.querySelectorAll('.sticker-item, .character').forEach(el => {
-    el.addEventListener('dragstart', (e) => {
-        draggedEmoji = el.getAttribute('data-emoji') || el.querySelector('.character-avatar').textContent;
-        e.dataTransfer.effectAllowed = 'copy';
-    });
-});
+        window.closePhotoModal = function () {
+            document.getElementById('photo-modal').classList.remove('active');
+            currentEditingTransactionId = null;
+            currentPhotoData = null;
+        };
 
-window.allowDrop = function (e) {
-    e.preventDefault();
-};
-
-window.dropSticker = async function (e, id) {
-    e.preventDefault();
-    if (!draggedEmoji) return;
-
-    const transactions = [...config.transactions];
-    const idx = transactions.findIndex(t => t.id === id);
-    if (idx !== -1) {
-        const oldT = transactions[idx];
-        const newT = { ...oldT, sticker: draggedEmoji };
-
-        await updateDocData({ transactions: arrayRemove(oldT) });
-        await updateDocData({ transactions: arrayUnion(newT) });
-    }
-    draggedEmoji = null;
-};
-
-// iOS Touch Support
-function isTouchDevice() {
-    return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-}
-
-if (isTouchDevice()) {
-    let activeTouchId = null;
-
-    document.querySelectorAll('.sticker-item, .character').forEach(el => {
-        el.addEventListener('touchstart', (e) => {
-            const touch = e.touches[0];
-            activeTouchId = touch.identifier;
-            draggedEmoji = el.getAttribute('data-emoji') || el.querySelector('.character-avatar').textContent;
-
-            // Buat ghost element yang ikut jari
-            touchGhost = document.createElement('div');
-            touchGhost.textContent = draggedEmoji;
-            touchGhost.style.cssText = `
-                position: fixed;
-                left: ${touch.clientX - 25}px;
-                top: ${touch.clientY - 25}px;
-                width: 50px;
-                height: 50px;
-                font-size: 2rem;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                pointer-events: none;
-                z-index: 99999;
-                opacity: 0.9;
-                transform: scale(1.2);
-                text-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            `;
-            document.body.appendChild(touchGhost);
-
-            // Haptic feedback kalau support
-            if (navigator.vibrate) navigator.vibrate(20);
-        }, { passive: false });
-
-        el.addEventListener('touchmove', (e) => {
-            if (!touchGhost) return;
-            e.preventDefault(); // prevent scroll saat drag
-
-            const touch = [...e.changedTouches].find(t => t.identifier === activeTouchId);
-            if (!touch) return;
-
-            touchGhost.style.left = (touch.clientX - 25) + 'px';
-            touchGhost.style.top = (touch.clientY - 25) + 'px';
-
-            // Deteksi element di bawah jari
-            touchGhost.style.display = 'none';
-            const elemBelow = document.elementFromPoint(touch.clientX, touch.clientY);
-            touchGhost.style.display = 'flex';
-
-            const cell = elemBelow?.closest('.sticker-cell');
-            
-            // Reset highlight lama
-            if (currentDropTarget && currentDropTarget !== cell) {
-                currentDropTarget.style.background = '';
-                currentDropTarget.style.borderRadius = '';
-            }
-
-            if (cell) {
-                cell.style.background = '#fce4ec';
-                cell.style.borderRadius = '8px';
-                currentDropTarget = cell;
+        window.triggerFileInput = function (type) {
+            if (type === 'camera') {
+                document.getElementById('camera-input').click();
             } else {
-                currentDropTarget = null;
+                document.getElementById('file-input').click();
             }
-        }, { passive: false });
+        };
 
-        el.addEventListener('touchend', (e) => {
-            const touch = [...e.changedTouches].find(t => t.identifier === activeTouchId);
-            if (!touch || !draggedEmoji) {
-                cleanupTouch();
+        window.handleFileSelect = function (event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                currentPhotoData = e.target.result;
+                renderPhotoPreview();
+                document.getElementById('btn-save-photo').disabled = false;
+                document.getElementById('btn-clear-photo').style.display = 'inline-block';
+            };
+            reader.readAsDataURL(file);
+        };
+
+        window.clearPhoto = function () {
+            currentPhotoData = null;
+            document.getElementById('btn-save-photo').disabled = true;
+            document.getElementById('btn-clear-photo').style.display = 'none';
+            resetPhotoPreview();
+            document.getElementById('file-input').value = '';
+            document.getElementById('camera-input').value = '';
+        };
+
+        function resetPhotoPreview() {
+            const area = document.getElementById('photo-preview-area');
+            area.classList.remove('has-image');
+            area.innerHTML = `
+                <div class="placeholder-text">
+                    <span class="icon">📷</span>
+                    <span>Belum ada foto</span>
+                </div>
+            `;
+        }
+
+        function renderPhotoPreview() {
+            if (!currentPhotoData) return;
+            const area = document.getElementById('photo-preview-area');
+            area.classList.add('has-image');
+
+            const canvas = document.getElementById('frame-canvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+            img.onload = function () {
+                const size = 400;
+                canvas.width = size;
+                canvas.height = size;
+
+                ctx.clearRect(0, 0, size, size);
+
+                ctx.save();
+                roundRect(ctx, 0, 0, size, size, 20);
+                ctx.clip();
+
+                const scale = Math.max(size / img.width, size / img.height);
+                const x = (size - img.width * scale) / 2;
+                const y = (size - img.height * scale) / 2;
+                ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
+                ctx.restore();
+
+                if (selectedFrame !== 'none') {
+                    drawCuteFrame(ctx, size, selectedFrame);
+                }
+
+                area.innerHTML = `<img src="${canvas.toDataURL('image/jpeg', 0.9)}" alt="Preview">`;
+            };
+            img.src = currentPhotoData;
+        }
+
+        function roundRect(ctx, x, y, w, h, r) {
+            ctx.beginPath();
+            ctx.moveTo(x + r, y);
+            ctx.lineTo(x + w - r, y);
+            ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+            ctx.lineTo(x + w, y + h - r);
+            ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+            ctx.lineTo(x + r, y + h);
+            ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+            ctx.lineTo(x, y + r);
+            ctx.quadraticCurveTo(x, y, x + r, y);
+            ctx.closePath();
+        }
+
+        function drawCuteFrame(ctx, size, frame) {
+            const frameColors = {
+                '💖': { bg: 'rgba(252, 228, 236, 0.3)', border: '#f48fb1', deco: '💖' },
+                '🌟': { bg: 'rgba(255, 248, 225, 0.3)', border: '#ffe082', deco: '🌟' },
+                '🐷': { bg: 'rgba(252, 228, 236, 0.3)', border: '#f8bbd0', deco: '🐷' },
+                '🐱': { bg: 'rgba(243, 229, 245, 0.3)', border: '#ce93d8', deco: '🐱' },
+                '🐶': { bg: 'rgba(255, 243, 224, 0.3)', border: '#ffcc80', deco: '🐶' },
+                '🐻': { bg: 'rgba(239, 235, 233, 0.3)', border: '#bcaaa4', deco: '🐻' },
+                '🐰': { bg: 'rgba(252, 228, 236, 0.3)', border: '#f48fb1', deco: '🐰' },
+                '🦄': { bg: 'rgba(252, 228, 236, 0.3)', border: '#f8bbd0', deco: '🦄' },
+                '🦋': { bg: 'rgba(255, 243, 224, 0.3)', border: '#ffcc80', deco: '🦋' }
+            };
+
+            const style = frameColors[frame] || frameColors['💖'];
+
+            ctx.strokeStyle = style.border;
+            ctx.lineWidth = 8;
+            roundRect(ctx, 4, 4, size - 8, size - 8, 20);
+            ctx.stroke();
+
+            ctx.strokeStyle = style.border;
+            ctx.lineWidth = 3;
+            ctx.setLineDash([10, 10]);
+            roundRect(ctx, 14, 14, size - 28, size - 28, 15);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            ctx.font = '28px serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(style.deco, 30, 30);
+            ctx.fillText(style.deco, size - 30, 30);
+            ctx.fillText(style.deco, 30, size - 30);
+            ctx.fillText(style.deco, size - 30, size - 30);
+
+            ctx.font = '36px serif';
+            ctx.fillText(style.deco, size / 2, size - 25);
+
+            ctx.font = '16px serif';
+            ctx.fillText('✨', 60, 20);
+            ctx.fillText('✨', size - 60, 20);
+            ctx.fillText('✨', 60, size - 20);
+            ctx.fillText('✨', size - 60, size - 20);
+        }
+
+        window.selectFrame = function (frame) {
+            selectedFrame = frame;
+            document.querySelectorAll('.frame-option').forEach(el => {
+                el.classList.toggle('selected', el.dataset.frame === frame);
+            });
+            if (currentPhotoData) {
+                renderPhotoPreview();
+            }
+        };
+
+        function resetFrameSelector() {
+            selectedFrame = 'none';
+            document.querySelectorAll('.frame-option').forEach(el => {
+                el.classList.toggle('selected', el.dataset.frame === 'none');
+            });
+        }
+
+        window.savePhoto = async function () {
+            if (!currentPhotoData || !currentEditingTransactionId) return;
+
+            const comment = document.getElementById('photo-comment').value.trim();
+            const btn = document.getElementById('btn-save-photo');
+            btn.disabled = true;
+            btn.textContent = '⏳ Mengunggah...';
+
+            try {
+                const canvas = document.getElementById('frame-canvas');
+                const finalDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+
+                const storagePath = `couples/${roomCode}/transactions/${currentEditingTransactionId}/photo.jpg`;
+                const storageRef = ref(storage, storagePath);
+                await uploadString(storageRef, finalDataUrl, 'data_url');
+                const downloadUrl = await getDownloadURL(storageRef);
+
+                const transactions = [...config.transactions];
+                const idx = transactions.findIndex(t => t.id === currentEditingTransactionId);
+                if (idx !== -1) {
+                    const oldT = { ...transactions[idx] };
+                    const newT = {
+                        ...oldT,
+                        photo: {
+                            url: downloadUrl,
+                            frame: selectedFrame,
+                            comment: comment,
+                            comments: oldT.photo && oldT.photo.comments ? oldT.photo.comments : []
+                        }
+                    };
+                    await updateDocData({ transactions: arrayRemove(oldT) });
+                    await updateDocData({ transactions: arrayUnion(newT) });
+                }
+
+                closePhotoModal();
+                alert('Foto berhasil disimpan! 📸✨');
+            } catch (err) {
+                console.error(err);
+                alert('Gagal upload foto: ' + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '💾 Simpan Foto';
+            }
+        };
+
+        // ═══════════════════════════════════════════════════════
+        // PHOTO PREVIEW & COMMENTS
+        // ═══════════════════════════════════════════════════════
+        window.openPhotoPreview = function (transactionId) {
+            currentPreviewTransactionId = transactionId;
+            const t = config.transactions.find(tr => tr.id === transactionId);
+            if (!t || !t.photo) return;
+
+            document.getElementById('preview-title').textContent = `📸 Foto ${t.person === 'boy' ? config.boyName : config.girlName}`;
+            document.getElementById('preview-image-container').innerHTML = `
+                <img src="${t.photo.url}" alt="Preview" style="border: 4px solid #fce4ec;">
+            `;
+
+            renderComments(t);
+            document.getElementById('new-comment-text').value = '';
+            document.getElementById('preview-modal').classList.add('active');
+        };
+
+        window.closePreviewModal = function () {
+            document.getElementById('preview-modal').classList.remove('active');
+            currentPreviewTransactionId = null;
+        };
+
+        function renderComments(t) {
+            const container = document.getElementById('preview-comments');
+            const comments = (t.photo && t.photo.comments) || [];
+
+            if (comments.length === 0) {
+                container.innerHTML = `<div style="text-align:center; color:#aaa; padding:16px; font-size:0.9rem;">Belum ada komentar nih~ 💬</div>`;
                 return;
             }
 
-            // Sembunyikan ghost buat deteksi element bawah
-            if (touchGhost) touchGhost.style.display = 'none';
-            const elemBelow = document.elementFromPoint(touch.clientX, touch.clientY);
-            if (touchGhost) touchGhost.style.display = 'flex';
+            container.innerHTML = comments.map(c => `
+                <div class="photo-comment-box">
+                    <div class="comment-header">
+                        <div class="comment-avatar">${c.person === 'boy' ? '👦' : '👧'}</div>
+                        <div class="comment-name">${c.person === 'boy' ? config.boyName : config.girlName}</div>
+                    </div>
+                    <div class="comment-text">${escapeHtml(c.text)}</div>
+                    <div class="comment-time">${new Date(c.timestamp).toLocaleString('id-ID')}</div>
+                </div>
+            `).join('');
+        }
 
-            const cell = elemBelow?.closest('.sticker-cell');
-            if (cell) {
-                const row = cell.closest('tr');
-                const id = row?.getAttribute('data-id');
-                if (id) {
-                    // Trigger drop
-                    dropSticker({ preventDefault: () => {} }, id);
-                    // Animasi
-                    cell.style.transform = 'scale(1.4)';
-                    setTimeout(() => cell.style.transform = 'scale(1)', 200);
-                    if (navigator.vibrate) navigator.vibrate([30, 50, 30]);
-                }
-            }
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
 
-            cleanupTouch();
+        window.addComment = async function () {
+            const text = document.getElementById('new-comment-text').value.trim();
+            if (!text || !currentPreviewTransactionId) return;
+
+            const t = config.transactions.find(tr => tr.id === currentPreviewTransactionId);
+            if (!t) return;
+
+            const person = prompt(`Komentar sebagai siapa?\n1 = 👦 ${config.boyName}\n2 = 👧 ${config.girlName}`, '1');
+            const personValue = person === '2' ? 'girl' : 'boy';
+
+            const newComment = {
+                text,
+                person: personValue,
+                timestamp: Date.now()
+            };
+
+            const oldT = { ...t };
+            const newPhoto = {
+                ...oldT.photo,
+                comments: [...(oldT.photo.comments || []), newComment]
+            };
+            const newT = { ...oldT, photo: newPhoto };
+
+            await updateDocData({ transactions: arrayRemove(oldT) });
+            await updateDocData({ transactions: arrayUnion(newT) });
+
+            document.getElementById('new-comment-text').value = '';
+            renderComments(newT);
+        };
+
+        window.deletePhoto = async function () {
+            if (!confirm('Yakin mau hapus foto ini? 🥺')) return;
+            const t = config.transactions.find(tr => tr.id === currentPreviewTransactionId);
+            if (!t || !t.photo) return;
+
+            try {
+                const photoRef = ref(storage, `couples/${roomCode}/transactions/${t.id}/photo.jpg`);
+                await deleteObject(photoRef);
+            } catch(e) { console.log('Storage file mungkin sudah terhapus'); }
+
+            const oldT = { ...t };
+            const newT = { ...oldT };
+            delete newT.photo;
+
+            await updateDocData({ transactions: arrayRemove(oldT) });
+            await updateDocData({ transactions: arrayUnion(newT) });
+            closePreviewModal();
+        };
+
+        // ═══════════════════════════════════════════════════════
+        // DRAG & DROP STICKERS
+        // ═══════════════════════════════════════════════════════
+        let draggedEmoji = null;
+        let touchGhost = null;
+        let currentDropTarget = null;
+
+        document.querySelectorAll('.sticker-item, .character').forEach(el => {
+            el.addEventListener('dragstart', (e) => {
+                draggedEmoji = el.getAttribute('data-emoji') || el.querySelector('.character-avatar').textContent;
+                e.dataTransfer.effectAllowed = 'copy';
+            });
         });
 
-        el.addEventListener('touchcancel', cleanupTouch);
-    });
-}
+        window.allowDrop = function (e) {
+            e.preventDefault();
+        };
 
-function cleanupTouch() {
-    if (touchGhost) {
-        touchGhost.remove();
-        touchGhost = null;
-    }
-    if (currentDropTarget) {
-        currentDropTarget.style.background = '';
-        currentDropTarget.style.borderRadius = '';
-        currentDropTarget = null;
-    }
-    draggedEmoji = null;
-    activeTouchId = null;
-}
+        window.dropSticker = async function (e, id) {
+            e.preventDefault();
+            if (!draggedEmoji) return;
+
+            const transactions = [...config.transactions];
+            const idx = transactions.findIndex(t => t.id === id);
+            if (idx !== -1) {
+                const oldT = transactions[idx];
+                const newT = { ...oldT, sticker: draggedEmoji };
+                await updateDocData({ transactions: arrayRemove(oldT) });
+                await updateDocData({ transactions: arrayUnion(newT) });
+            }
+            draggedEmoji = null;
+        };
+
+        function isTouchDevice() {
+            return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        }
+
+        if (isTouchDevice()) {
+            let activeTouchId = null;
+
+            document.querySelectorAll('.sticker-item, .character').forEach(el => {
+                el.addEventListener('touchstart', (e) => {
+                    const touch = e.touches[0];
+                    activeTouchId = touch.identifier;
+                    draggedEmoji = el.getAttribute('data-emoji') || el.querySelector('.character-avatar').textContent;
+
+                    touchGhost = document.createElement('div');
+                    touchGhost.textContent = draggedEmoji;
+                    touchGhost.style.cssText = `
+                        position: fixed;
+                        left: ${touch.clientX - 25}px;
+                        top: ${touch.clientY - 25}px;
+                        width: 50px;
+                        height: 50px;
+                        font-size: 2rem;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        pointer-events: none;
+                        z-index: 99999;
+                        opacity: 0.9;
+                        transform: scale(1.2);
+                        text-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                    `;
+                    document.body.appendChild(touchGhost);
+
+                    if (navigator.vibrate) navigator.vibrate(20);
+                }, { passive: false });
+
+                el.addEventListener('touchmove', (e) => {
+                    if (!touchGhost) return;
+                    e.preventDefault();
+
+                    const touch = [...e.changedTouches].find(t => t.identifier === activeTouchId);
+                    if (!touch) return;
+
+                    touchGhost.style.left = (touch.clientX - 25) + 'px';
+                    touchGhost.style.top = (touch.clientY - 25) + 'px';
+
+                    touchGhost.style.display = 'none';
+                    const elemBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+                    touchGhost.style.display = 'flex';
+
+                    const cell = elemBelow?.closest('.sticker-cell');
+
+                    if (currentDropTarget && currentDropTarget !== cell) {
+                        currentDropTarget.style.background = '';
+                        currentDropTarget.style.borderRadius = '';
+                    }
+
+                    if (cell) {
+                        cell.style.background = '#fce4ec';
+                        cell.style.borderRadius = '8px';
+                        currentDropTarget = cell;
+                    } else {
+                        currentDropTarget = null;
+                    }
+                }, { passive: false });
+
+                el.addEventListener('touchend', (e) => {
+                    const touch = [...e.changedTouches].find(t => t.identifier === activeTouchId);
+                    if (!touch || !draggedEmoji) {
+                        cleanupTouch();
+                        return;
+                    }
+
+                    if (touchGhost) touchGhost.style.display = 'none';
+                    const elemBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+                    if (touchGhost) touchGhost.style.display = 'flex';
+
+                    const cell = elemBelow?.closest('.sticker-cell');
+                    if (cell) {
+                        const row = cell.closest('tr');
+                        const id = row?.getAttribute('data-id');
+                        if (id) {
+                            dropSticker({ preventDefault: () => {} }, id);
+                            cell.style.transform = 'scale(1.4)';
+                            setTimeout(() => cell.style.transform = 'scale(1)', 200);
+                            if (navigator.vibrate) navigator.vibrate([30, 50, 30]);
+                        }
+                    }
+
+                    cleanupTouch();
+                });
+
+                el.addEventListener('touchcancel', cleanupTouch);
+            });
+        }
+
+        function cleanupTouch() {
+            if (touchGhost) {
+                touchGhost.remove();
+                touchGhost = null;
+            }
+            if (currentDropTarget) {
+                currentDropTarget.style.background = '';
+                currentDropTarget.style.borderRadius = '';
+                currentDropTarget = null;
+            }
+            draggedEmoji = null;
+            activeTouchId = null;
+        }
 
         // ═══════════════════════════════════════════════════════
         // EDIT CONFIG
@@ -1398,25 +1178,190 @@ function cleanupTouch() {
         };
 
         // ═══════════════════════════════════════════════════════
-        // EXPORT CSV
+        // EXPORT XLSX (ExcelJS) - Template Pastel Lucu
         // ═══════════════════════════════════════════════════════
-        window.exportCSV = function () {
+        window.exportXLSX = async function () {
             const transactions = config.transactions || [];
             if (transactions.length === 0) {
                 alert('Belum ada data untuk di-export! 😅');
                 return;
             }
-            let csv = 'Tanggal,Nama,Keterangan,Jumlah,Stiker\n';
-            transactions.forEach(t => {
-                const name = t.person === 'boy' ? config.boyName : config.girlName;
-                csv += `${t.date},${name},"${t.note || ''}",${t.amount},${t.sticker || ''}\n`;
+
+            const Excel = window.ExcelJS;
+            const workbook = new Excel.Workbook();
+            const worksheet = workbook.addWorksheet('Tabungan Bersama');
+
+            // 🎨 Palette Warna Pastel
+            const pastel = {
+                pink:     'FFFCE4EC',
+                pink2:    'FFF8BBD0',
+                blue:     'FFE3F2FD',
+                blue2:    'FFBBDEFB',
+                yellow:   'FFFFF8E1',
+                yellow2:  'FFFFECB3',
+                green:    'FFE8F5E9',
+                green2:   'FFA5D6A7',
+                purple:   'FFF3E5F5',
+                purple2:  'FFCE93D8',
+                teal:     'FFE0F7FA',
+                orange:   'FFFFF3E0',
+                rose:     'FFFFEBEE',
+                white:    'FFFFFFFF',
+                border:   'FFF48FB1',
+                text:     'FF444444',
+                headerText: 'FFFFFFFF',
+                accent:   'FFD81B60',
+                amount:   'FF2E7D32'
+            };
+
+            // ═══════ HEADER JUDUL ═══════
+            worksheet.mergeCells('A1:F1');
+            const titleCell = worksheet.getCell('A1');
+            titleCell.value = `💕 Tabungan Bersama — ${config.targetName}`;
+            titleCell.font = { name: 'Calibri', size: 18, bold: true, color: { argb: pastel.accent } };
+            titleCell.alignment = { horizontal: 'center', vertical: 'middle' };
+            titleCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: pastel.pink } };
+            worksheet.getRow(1).height = 40;
+
+            // ═══════ SUBTITLE ═══════
+            worksheet.mergeCells('A2:F2');
+            const subCell = worksheet.getCell('A2');
+            const total = transactions.reduce((s, t) => s + (t.amount || 0), 0);
+            subCell.value = `👦 ${config.boyName}  💕  👧 ${config.girlName}    |    Target: ${formatRupiah(config.targetAmount)}    |    Tercapai: ${formatRupiah(total)}`;
+            subCell.font = { name: 'Calibri', size: 10, color: { argb: 'FF888888' } };
+            subCell.alignment = { horizontal: 'center', vertical: 'middle' };
+            subCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: pastel.white } };
+            worksheet.getRow(2).height = 25;
+
+            // ═══════ INFO TARGET ═══════
+            worksheet.mergeCells('A3:F3');
+            const infoCell = worksheet.getCell('A3');
+            const percent = Math.min(100, Math.round((total / config.targetAmount) * 100));
+            infoCell.value = `📊 Progress: ${percent}%  |  📝 Total Transaksi: ${transactions.length}  |  📅 Export: ${new Date().toLocaleDateString('id-ID')}`;
+            infoCell.font = { name: 'Calibri', size: 9, italic: true, color: { argb: 'FFAAAAAA' } };
+            infoCell.alignment = { horizontal: 'center', vertical: 'middle' };
+            infoCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: pastel.yellow } };
+            worksheet.getRow(3).height = 22;
+
+            // Baris kosong
+            worksheet.addRow([]);
+
+            // ═══════ HEADER TABEL ═══════
+            const headers = ['📅 Tanggal', '👤 Nama', '📝 Keterangan', '💰 Jumlah', '🎨 Stiker', '📸 Foto'];
+            const headerRow = worksheet.addRow(headers);
+            const headerColors = [pastel.pink2, pastel.blue2, pastel.purple2, pastel.green2, pastel.yellow2, pastel.teal];
+
+            headerRow.eachCell((cell, colNumber) => {
+                cell.font = { name: 'Calibri', bold: true, color: { argb: pastel.headerText }, size: 11 };
+                cell.alignment = { horizontal: 'center', vertical: 'middle' };
+                cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: headerColors[colNumber - 1] } };
+                cell.border = {
+                    top:    { style: 'medium', color: { argb: pastel.border } },
+                    bottom: { style: 'medium', color: { argb: pastel.border } },
+                    left:   { style: 'medium', color: { argb: pastel.border } },
+                    right:  { style: 'medium', color: { argb: pastel.border } }
+                };
             });
-            const blob = new Blob([csv], { type: 'text/csv' });
+            headerRow.height = 32;
+
+            // ═══════ DATA ROWS ═══════
+            const sortedTransactions = [...transactions].sort((a, b) => new Date(b.date) - new Date(a.date));
+            const rowPastelBg = [pastel.white, 'FFFFF8FB', 'FFFFF5F5', 'FFFFF0F7', 'FFFFFBF0', 'FFF5FFFA', 'FFF0F8FF'];
+
+            sortedTransactions.forEach((t, idx) => {
+                const name = t.person === 'boy' ? config.boyName : config.girlName;
+                const hasPhoto = t.photo && t.photo.url ? '✅ Ada' : '❌ Belum';
+                const row = worksheet.addRow([
+                    new Date(t.date).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }),
+                    `${t.person === 'boy' ? '👦' : '👧'} ${name}`,
+                    t.note || '-',
+                    t.amount,
+                    t.sticker || '✨',
+                    hasPhoto
+                ]);
+
+                const bgColor = rowPastelBg[idx % rowPastelBg.length];
+
+                row.eachCell((cell, colNumber) => {
+                    cell.font = { name: 'Calibri', size: 10, color: { argb: pastel.text } };
+                    cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: bgColor } };
+                    cell.border = {
+                        top:    { style: 'thin', color: { argb: 'FFFCE4EC' } },
+                        bottom: { style: 'thin', color: { argb: 'FFFCE4EC' } },
+                        left:   { style: 'thin', color: { argb: 'FFFCE4EC' } },
+                        right:  { style: 'thin', color: { argb: 'FFFCE4EC' } }
+                    };
+                });
+
+                // Alignment per kolom
+                row.getCell(1).alignment = { horizontal: 'center', vertical: 'middle' };   // Tanggal
+                row.getCell(2).alignment = { horizontal: 'left',   vertical: 'middle' };   // Nama
+                row.getCell(3).alignment = { horizontal: 'left',   vertical: 'middle' };   // Keterangan
+                row.getCell(4).alignment = { horizontal: 'right',  vertical: 'middle' };   // Jumlah
+                row.getCell(5).alignment = { horizontal: 'center', vertical: 'middle' };   // Stiker
+                row.getCell(6).alignment = { horizontal: 'center', vertical: 'middle' };   // Foto
+
+                // 💰 Styling khusus kolom Jumlah (hijau pastel + bold)
+                const amountCell = row.getCell(4);
+                amountCell.font = { name: 'Calibri', size: 10, bold: true, color: { argb: pastel.amount } };
+                amountCell.numFmt = '"Rp" #,##0';
+
+                // 🎨 Styling khusus kolom Stiker (background sesuai emoji kalau cocok)
+                const stickerCell = row.getCell(5);
+                const stickerColors = {
+                    '💖': 'FFFCE4EC', '🌟': 'FFFFF8E1', '🎯': 'FFE8F5E9', '🚀': 'FFE3F2FD',
+                    '🐷': 'FFFCE4EC', '🐱': 'FFF3E5F5', '🐶': 'FFFFF3E0', '🐻': 'FFEFEBE9',
+                    '🐼': 'FFECEFF1', '🐰': 'FFFCE4EC', '🦊': 'FFFFF8E1', '🐧': 'FFE3F2FD',
+                    '🐸': 'FFE8F5E9', '🦄': 'FFF3E5F5', '🦋': 'FFFFF3E0'
+                };
+                if (stickerColors[t.sticker]) {
+                    stickerCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: stickerColors[t.sticker] } };
+                }
+
+                // 📸 Styling khusus kolom Foto
+                const photoCell = row.getCell(6);
+                if (t.photo && t.photo.url) {
+                    photoCell.font = { name: 'Calibri', size: 10, bold: true, color: { argb: 'FF2E7D32' } };
+                } else {
+                    photoCell.font = { name: 'Calibri', size: 10, color: { argb: 'FFAAAAAA' } };
+                }
+
+                row.height = 26;
+            });
+
+            // ═══════ FOOTER / RINGKASAN ═══════
+            const footerRow = worksheet.rowCount + 2;
+            worksheet.mergeCells(`A${footerRow}:F${footerRow}`);
+            const footerCell = worksheet.getCell(`A${footerRow}`);
+            footerCell.value = `💕 Dibuat dengan cinta oleh ${config.boyName} & ${config.girlName} — Semangat nabung bareng! 🌟`;
+            footerCell.font = { name: 'Calibri', size: 10, italic: true, color: { argb: pastel.accent } };
+            footerCell.alignment = { horizontal: 'center', vertical: 'middle' };
+            footerCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: pastel.pink } };
+            worksheet.getRow(footerRow).height = 28;
+
+            // ═══════ COLUMN WIDTHS ═══════
+            worksheet.columns = [
+                { width: 16 }, // Tanggal
+                { width: 22 }, // Nama
+                { width: 35 }, // Keterangan
+                { width: 18 }, // Jumlah
+                { width: 12 }, // Stiker
+                { width: 12 }  // Foto
+            ];
+
+            // ═══════ FREEZE PANES ═══════
+            worksheet.views = [{ state: 'frozen', ySplit: 5 }];
+
+            // ═══════ WRITE & DOWNLOAD ═══════
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `tabungan-${roomCode}-${new Date().toISOString().split('T')[0]}.csv`;
+            a.download = `💕-tabungan-${roomCode}-${new Date().toISOString().split('T')[0]}.xlsx`;
+            document.body.appendChild(a);
             a.click();
+            document.body.removeChild(a);
             URL.revokeObjectURL(url);
         };
 
@@ -1443,10 +1388,15 @@ function cleanupTouch() {
         document.getElementById('modal').addEventListener('click', (e) => {
             if (e.target.id === 'modal') closeModal();
         });
+        document.getElementById('photo-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'photo-modal') closePhotoModal();
+        });
+        document.getElementById('preview-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'preview-modal') closePreviewModal();
+        });
 
         // Init date
         document.getElementById('input-date').valueAsDate = new Date();
     </script>
 </body>
-
 </html>
